@@ -35,7 +35,7 @@ def extract_credentials(data):
     return credentials
 
 def monitor_traffic():
-    """Monitorea el tráfico HTTP"""
+    """Monitorea el tráfico HTTP y HTTPS"""
     print_header()
     
     try:
@@ -45,9 +45,9 @@ def monitor_traffic():
         subprocess.run(['apt-get', 'install', '-y', 'tcpdump', '-qq'],
                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
-        # Iniciar captura con más bytes
+        # Iniciar captura de HTTP Y HTTPS
         process = subprocess.Popen(
-            ['tcpdump', '-i', 'any', '-A', '-s', '65535', 'tcp port 80'],
+            ['tcpdump', '-i', 'any', '-A', '-s', '65535', 'tcp port 80 or tcp port 443'],
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
             universal_newlines=True,
@@ -57,6 +57,7 @@ def monitor_traffic():
         buffer = []
         in_post = False
         post_lines = []
+        https_shown = False
         
         for line in process.stdout:
             buffer.append(line)
@@ -97,6 +98,26 @@ def monitor_traffic():
                 if len(post_lines) > 30:
                     in_post = False
                     post_lines = []
+            
+            # Detectar tráfico HTTPS (puerto 443)
+            if not https_shown and (':443' in line or '.443' in line):
+                # Verificar que hay datos reales (no solo headers vacíos)
+                if len(line) > 30:
+                    timestamp = datetime.now().strftime('%H:%M:%S')
+                    print(f"\n🔒 [{timestamp}] Tráfico HTTPS detectado")
+                    print("   Puerto: 443 (HTTPS)")
+                    print("\n" + "="*60)
+                    print("🔐 DATOS CIFRADOS INTERCEPTADOS")
+                    print("="*60)
+                    print("   El atacante puede ver el tráfico, pero está CIFRADO")
+                    print("   Ejemplo de datos cifrados (ilegibles):")
+                    print("   " + "█" * 50)
+                    print("   Hex: 16 03 03 00 a5 01 00 00 a1 03 03 5f 8e...")
+                    print("\n   ✅ Las credenciales están CIFRADAS con TLS/SSL")
+                    print("   ✅ Imposible leer el contenido sin la clave privada")
+                    print("   ✅ El atacante solo ve datos binarios sin sentido")
+                    print("="*60 + "\n")
+                    https_shown = True
             
             # Limpiar buffer si es muy grande
             if len(buffer) > 100:
