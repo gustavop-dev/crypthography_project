@@ -59,7 +59,7 @@ sleep 5
 
 # Copiar scripts necesarios al webserver
 echo -e "${CYAN}📋 Copiando scripts al contenedor...${NC}"
-sudo docker compose cp webserver/monitor_simple.py webserver:/app/ >/dev/null 2>&1
+sudo docker compose cp webserver/monitor_traffic.py webserver:/app/ >/dev/null 2>&1
 sudo docker compose cp webserver/generate_cert.sh webserver:/app/ >/dev/null 2>&1
 sudo docker compose cp webserver/start_https.sh webserver:/app/ >/dev/null 2>&1
 
@@ -93,7 +93,7 @@ cleanup() {
 trap cleanup SIGINT SIGTERM
 
 # Iniciar monitor en background
-sudo docker compose exec -T webserver python3 /app/monitor_simple.py &
+sudo docker compose exec -T webserver python3 /app/monitor_traffic.py &
 MONITOR_PID=$!
 
 # Esperar un poco
@@ -196,7 +196,7 @@ cleanup() {
 
 trap cleanup SIGINT SIGTERM
 
-sudo docker compose exec -T webserver python3 /app/monitor_simple.py &
+sudo docker compose exec -T webserver python3 /app/monitor_traffic.py &
 MONITOR_PID=$!
 
 sleep 2
