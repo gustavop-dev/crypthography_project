@@ -70,8 +70,10 @@ def monitor_traffic():
                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
         # Iniciar captura de HTTP y HTTPS
+        # Usar filtro más específico para evitar falsos positivos
         process = subprocess.Popen(
-            ['tcpdump', '-i', 'any', '-A', '-s', '65535', 'tcp port 80 or tcp port 443'],
+            ['tcpdump', '-i', 'any', '-A', '-s', '65535', '-l', 
+             'tcp port 80 or tcp port 443'],
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
             universal_newlines=True,
@@ -87,14 +89,17 @@ def monitor_traffic():
         for line in process.stdout:
             buffer.append(line)
             
-            # Detectar tráfico HTTPS
-            if '.443 >' in line or '> .443' in line or 'https' in line.lower():
-                if not in_https_traffic:
-                    in_https_traffic = True
-                    https_packet_count = 0
-                    timestamp = datetime.now().strftime('%H:%M:%S')
-                    print(f"\n🔒 [{timestamp}] Tráfico HTTPS detectado")
-                    print(f"   Puerto: 443 (HTTPS)")
+            # Detectar tráfico HTTPS (solo si hay handshake TLS o datos cifrados reales)
+            if '.443' in line or ':443' in line:
+                # Verificar que realmente hay datos TLS/SSL
+                if (is_tls_handshake(line) or 
+                    (is_encrypted_data(line) and len(line) > 30)):
+                    if not in_https_traffic:
+                        in_https_traffic = True
+                        https_packet_count = 0
+                        timestamp = datetime.now().strftime('%H:%M:%S')
+                        print(f"\n🔒 [{timestamp}] Tráfico HTTPS detectado")
+                        print(f"   Puerto: 443 (HTTPS)")
             
             # Mostrar datos cifrados de HTTPS
             if in_https_traffic:
@@ -124,13 +129,15 @@ def monitor_traffic():
                     in_https_traffic = False
                     https_packet_count = 0
             
-            # Detectar POST HTTP (texto plano)
-            if 'POST' in line and '/login/' in line and '.80 >' in line:
-                in_http_post = True
-                post_lines = []
-                timestamp = datetime.now().strftime('%H:%M:%S')
-                print(f"\n📡 [{timestamp}] HTTP POST Request detectado")
-                print(f"   Ruta: /login/ (Puerto 80 - SIN CIFRAR)")
+            # Detectar POST HTTP (texto plano) - solo puerto 80
+            if 'POST' in line and '/login/' in line:
+                # Verificar que NO es puerto 443
+                if '.443' not in line and ':443' not in line:
+                    in_http_post = True
+                    post_lines = []
+                    timestamp = datetime.now().strftime('%H:%M:%S')
+                    print(f"\n📡 [{timestamp}] HTTP POST Request detectado")
+                    print(f"   Ruta: /login/ (Puerto 80 - SIN CIFRAR)")
             
             # Acumular líneas del POST HTTP
             if in_http_post:
