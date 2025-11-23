@@ -1,0 +1,166 @@
+# ============================================
+# Configuración SSH Cliente SEGURA
+# ============================================
+#
+# Este archivo debe colocarse en ~/.ssh/config
+# o en /etc/ssh/ssh_config (global)
+#
+# Proyecto: Criptografía y Seguridad - UNAL Medellín
+# Grupo 6
+# ============================================
+
+# Configuración global para todos los hosts
+Host *
+    # Solo usar protocolo SSH versión 2
+    Protocol 2
+    
+    # ============================================
+    # Algoritmos de Cifrado Modernos
+    # ============================================
+    # Solo algoritmos seguros (ChaCha20, AES-GCM, AES-CTR)
+    Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+    
+    # ============================================
+    # MACs Seguros
+    # ============================================
+    # Solo SHA256 y SHA512
+    MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
+    
+    # ============================================
+    # Key Exchange Algorithms Seguros
+    # ============================================
+    KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
+    
+    # ============================================
+    # Algoritmos de Clave Pública del Host
+    # ============================================
+    # Preferir ED25519, luego RSA
+    HostKeyAlgorithms ssh-ed25519,rsa-sha2-512,rsa-sha2-256
+    
+    # ============================================
+    # Autenticación
+    # ============================================
+    # Preferir autenticación por clave pública
+    PreferredAuthentications publickey,keyboard-interactive,password
+    
+    # Usar claves específicas (descomentar y ajustar)
+    # IdentityFile ~/.ssh/id_ed25519
+    # IdentityFile ~/.ssh/id_rsa
+    
+    # Solo intentar con claves explícitas
+    IdentitiesOnly yes
+    
+    # ============================================
+    # Verificación de Host
+    # ============================================
+    # Verificar estrictamente las claves del host
+    StrictHostKeyChecking ask
+    
+    # Archivo de hosts conocidos
+    UserKnownHostsFile ~/.ssh/known_hosts
+    
+    # Verificar IP del host además del nombre
+    CheckHostIP yes
+    
+    # ============================================
+    # Seguridad Adicional
+    # ============================================
+    # No usar autenticación basada en host (insegura)
+    HostbasedAuthentication no
+    
+    # No usar archivos .rhosts (obsoletos)
+    IgnoreRhosts yes
+    
+    # No reenviar agente SSH (por seguridad)
+    ForwardAgent no
+    
+    # No reenviar X11 (por seguridad)
+    ForwardX11 no
+    
+    # ============================================
+    # Timeouts y Keepalives
+    # ============================================
+    # Enviar keepalive cada 60 segundos
+    ServerAliveInterval 60
+    
+    # Desconectar después de 3 keepalives sin respuesta
+    ServerAliveCountMax 3
+    
+    # Timeout de conexión
+    ConnectTimeout 30
+    
+    # ============================================
+    # Compresión
+    # ============================================
+    # Habilitar compresión (útil para conexiones lentas)
+    Compression yes
+    
+    # ============================================
+    # Logging
+    # ============================================
+    # Nivel de log (QUIET, FATAL, ERROR, INFO, VERBOSE, DEBUG)
+    LogLevel INFO
+    
+    # ============================================
+    # Otros
+    # ============================================
+    # Usar multiplexación de conexiones (más rápido)
+    ControlMaster auto
+    ControlPath ~/.ssh/sockets/%r@%h:%p
+    ControlPersist 10m
+    
+    # Hashear hosts conocidos (más privacidad)
+    HashKnownHosts yes
+    
+    # Deshabilitar escape sequences peligrosas
+    EscapeChar none
+
+# ============================================
+# Configuraciones Específicas por Host
+# ============================================
+
+# Ejemplo: Servidor de producción
+# Host production-server
+#     HostName 192.168.1.100
+#     User admin
+#     Port 22
+#     IdentityFile ~/.ssh/id_ed25519_production
+#     StrictHostKeyChecking yes
+
+# Ejemplo: Servidor de desarrollo
+# Host dev-server
+#     HostName dev.example.com
+#     User developer
+#     Port 2222
+#     IdentityFile ~/.ssh/id_ed25519_dev
+#     ForwardAgent yes  # Solo si es necesario
+
+# Ejemplo: Servidor con 2FA
+# Host 2fa-server
+#     HostName secure.example.com
+#     User admin
+#     PreferredAuthentications publickey,keyboard-interactive
+#     ChallengeResponseAuthentication yes
+
+# ============================================
+# NOTAS DE USO
+# ============================================
+#
+# 1. Copiar este archivo a ~/.ssh/config:
+#    cp ssh_config.client ~/.ssh/config
+#    chmod 600 ~/.ssh/config
+#
+# 2. O copiar a /etc/ssh/ssh_config (global, requiere sudo):
+#    sudo cp ssh_config.client /etc/ssh/ssh_config
+#
+# 3. Crear directorio para sockets de multiplexación:
+#    mkdir -p ~/.ssh/sockets
+#    chmod 700 ~/.ssh/sockets
+#
+# 4. Probar configuración:
+#    ssh -v usuario@servidor
+#
+# 5. Ver algoritmos negociados:
+#    ssh -vv usuario@servidor 2>&1 | grep -i "kex\|cipher\|mac"
+#
+# ============================================
