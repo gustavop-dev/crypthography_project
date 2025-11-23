@@ -110,9 +110,20 @@ def monitor_traffic():
                     print("🔐 DATOS CIFRADOS INTERCEPTADOS")
                     print("="*60)
                     print("   El atacante puede ver el tráfico, pero está CIFRADO")
-                    print("   Ejemplo de datos cifrados (ilegibles):")
-                    print("   " + "█" * 50)
-                    print("   Hex: 16 03 03 00 a5 01 00 00 a1 03 03 5f 8e...")
+                    
+                    # Mostrar muestra REAL de datos cifrados de la línea capturada
+                    print("\n   Datos capturados (muestra real):")
+                    # Tomar una porción de la línea y mostrarla
+                    sample = line.strip()[:80] if len(line) > 80 else line.strip()
+                    # Reemplazar caracteres no imprimibles con █
+                    visual = ''.join('█' if (ord(c) < 32 or ord(c) > 126) else c for c in sample)
+                    print(f"   {visual}")
+                    
+                    # Mostrar bytes en hexadecimal (real)
+                    hex_bytes = ' '.join([f'{ord(c):02x}' for c in sample[:20] if ord(c) < 128])
+                    if hex_bytes:
+                        print(f"\n   Hex (primeros bytes): {hex_bytes}...")
+                    
                     print("\n   ✅ Las credenciales están CIFRADAS con TLS/SSL")
                     print("   ✅ Imposible leer el contenido sin la clave privada")
                     print("   ✅ El atacante solo ve datos binarios sin sentido")
