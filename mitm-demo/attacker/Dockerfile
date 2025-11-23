@@ -13,7 +13,6 @@ RUN apt-get update && apt-get install -y \
     tcpdump \
     tshark \
     dsniff \
-    arpspoof \
     ettercap-text-only \
     net-tools \
     iputils-ping \
