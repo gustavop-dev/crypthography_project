@@ -1,0 +1,99 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+*.pyc
+
+# Evidencias sensibles (se excluyen por seguridad)
+evidencias/pcap_files/*.pcap
+evidencias/logs/*.log
+*.pcap
+
+# Claves privadas SSH (NUNCA commitear)
+*.pem
+*.key
+!**/ssl/*.key  # Excepto las de demo en ssl/
+id_rsa
+id_ed25519
+*.priv
+
+# Certificados temporales
+*.crt
+*.csr
+!**/ssl/*.crt  # Excepto los de demo
+
+# Docker
+.dockerignore
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.bbl
+*.blg
+*.pdf
+!docs/informe_tecnico/main.pdf  # Excepto el PDF final
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+.cache/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Secrets y configuraciones locales
+.env
+secrets.txt
+credentials.txt
+passwords.txt
+
+# Capturas de Wireshark grandes
+*.pcapng

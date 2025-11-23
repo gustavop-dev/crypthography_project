@@ -1,0 +1,143 @@
+# ============================================
+# Configuración SSH DÉBIL (INSEGURA)
+# ⚠️  SOLO PARA DEMOSTRACIÓN EDUCATIVA ⚠️
+# ============================================
+#
+# Esta configuración contiene múltiples vulnerabilidades
+# de seguridad con fines demostrativos.
+#
+# ❌ NUNCA usar en producción
+# ✅ Solo para laboratorio controlado
+#
+# Proyecto: Criptografía y Seguridad - UNAL Medellín
+# Grupo 6
+# ============================================
+
+# Puerto SSH (estándar, fácil de escanear)
+Port 22
+
+# Protocolo SSH (permitir versión 2 solamente, pero sin restricciones adicionales)
+Protocol 2
+
+# Direcciones de escucha
+ListenAddress 0.0.0.0
+ListenAddress ::
+
+# ============================================
+# VULNERABILIDAD 1: Login de Root Permitido
+# ============================================
+# Permite login directo como root, objetivo principal de atacantes
+PermitRootLogin yes
+
+# ============================================
+# VULNERABILIDAD 2: Autenticación por Contraseña
+# ============================================
+# Permite ataques de fuerza bruta
+PasswordAuthentication yes
+PermitEmptyPasswords no  # Al menos esto está bien
+
+# Autenticación por clave pública (habilitada pero no forzada)
+PubkeyAuthentication yes
+
+# ============================================
+# VULNERABILIDAD 3: Sin 2FA
+# ============================================
+# No hay autenticación de dos factores
+ChallengeResponseAuthentication no
+UsePAM yes
+
+# ============================================
+# VULNERABILIDAD 4: Múltiples Intentos de Login
+# ============================================
+# Permite 6 intentos, facilita fuerza bruta
+MaxAuthTries 6
+MaxSessions 10
+
+# ============================================
+# VULNERABILIDAD 5: Sin Timeout de Sesión
+# ============================================
+# Sesiones pueden quedar abiertas indefinidamente
+ClientAliveInterval 0
+ClientAliveCountMax 3
+
+# ============================================
+# VULNERABILIDAD 6: Sin Restricción de Usuarios
+# ============================================
+# Cualquier usuario del sistema puede intentar login
+# (No hay AllowUsers, AllowGroups, DenyUsers, DenyGroups)
+
+# ============================================
+# VULNERABILIDAD 7: Algoritmos de Cifrado Débiles
+# ============================================
+# Incluye algoritmos obsoletos y vulnerables
+Ciphers 3des-cbc,aes128-cbc,aes192-cbc,aes256-cbc,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com
+
+# ============================================
+# VULNERABILIDAD 8: MACs Débiles
+# ============================================
+# Incluye algoritmos de hash débiles
+MACs hmac-md5,hmac-sha1,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-ripemd160
+
+# ============================================
+# VULNERABILIDAD 9: Key Exchange Débil
+# ============================================
+# Incluye algoritmos de intercambio de claves débiles
+KexAlgorithms diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,curve25519-sha256,curve25519-sha256@libssh.org
+
+# ============================================
+# VULNERABILIDAD 10: Forwarding Habilitado
+# ============================================
+# Puede ser explotado para pivoting
+X11Forwarding yes
+AllowTcpForwarding yes
+AllowAgentForwarding yes
+GatewayPorts no
+
+# ============================================
+# VULNERABILIDAD 11: Banner Informativo
+# ============================================
+# Revela información del sistema
+Banner /etc/issue.net
+
+# ============================================
+# Configuración de Logging (al menos esto está bien)
+# ============================================
+SyslogFacility AUTH
+LogLevel INFO
+
+# ============================================
+# Subsistemas
+# ============================================
+Subsystem sftp /usr/lib/openssh/sftp-server
+
+# ============================================
+# Otras configuraciones permisivas
+# ============================================
+StrictModes yes
+IgnoreRhosts yes
+HostbasedAuthentication no
+PermitUserEnvironment no
+Compression delayed
+UseDNS no
+PrintMotd no
+PrintLastLog yes
+TCPKeepAlive yes
+PermitTunnel no
+
+# ============================================
+# RESUMEN DE VULNERABILIDADES
+# ============================================
+# 1. ✅ Login de root permitido
+# 2. ✅ Autenticación por contraseña habilitada
+# 3. ✅ Sin 2FA
+# 4. ✅ 6 intentos de login permitidos
+# 5. ✅ Sin timeout de sesión
+# 6. ✅ Sin restricción de usuarios
+# 7. ✅ Algoritmos de cifrado débiles (3DES, CBC)
+# 8. ✅ MACs débiles (MD5, SHA1)
+# 9. ✅ Key exchange débil (DH group1)
+# 10. ✅ Forwarding habilitado
+# 11. ✅ Banner informativo
+#
+# Puntuación de seguridad estimada: 2/10 ⚠️
+# ============================================
