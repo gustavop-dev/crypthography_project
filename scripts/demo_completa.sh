@@ -66,17 +66,9 @@ echo ""
 echo -e "${RED}🕵️  INICIANDO INTERCEPTACIÓN...${NC}"
 echo ""
 
-# Crear un script temporal que ejecute ambos comandos
+# Crear un script temporal que ejecute el monitor con timeout
 cat > /tmp/demo_http.sh << 'SCRIPT'
 #!/bin/bash
-
-# Función para limpiar al salir
-cleanup() {
-    kill $MONITOR_PID 2>/dev/null
-    exit 0
-}
-
-trap cleanup SIGINT SIGTERM
 
 # Iniciar monitor en background
 sudo docker compose exec -T webserver python3 /app/monitor_traffic.py &
@@ -94,15 +86,20 @@ echo "   URL: http://localhost:8080"
 echo "   Usuario: admin"
 echo "   Contraseña: password123"
 echo ""
-echo "⚠️  Presiona Ctrl+C cuando termines de ver las credenciales"
+echo "⏱️  Esperando 30 segundos para que hagas login..."
+echo "   (O presiona Ctrl+C si ya viste las credenciales)"
 echo ""
 
-# Esperar
-wait $MONITOR_PID
+# Esperar 30 segundos o hasta Ctrl+C
+sleep 30 2>/dev/null || true
+
+# Matar el monitor
+kill $MONITOR_PID 2>/dev/null
+wait $MONITOR_PID 2>/dev/null
 SCRIPT
 
 chmod +x /tmp/demo_http.sh
-bash /tmp/demo_http.sh
+bash /tmp/demo_http.sh 2>/dev/null || true
 
 echo ""
 echo -e "${RED}═══════════════════════════════════════════════════════════${NC}"
@@ -160,13 +157,6 @@ echo ""
 cat > /tmp/demo_https.sh << 'SCRIPT'
 #!/bin/bash
 
-cleanup() {
-    kill $MONITOR_PID 2>/dev/null
-    exit 0
-}
-
-trap cleanup SIGINT SIGTERM
-
 sudo docker compose exec -T webserver python3 /app/monitor_traffic.py &
 MONITOR_PID=$!
 
@@ -181,16 +171,22 @@ echo "   URL: https://localhost:8443"
 echo "   Usuario: admin"
 echo "   Contraseña: password123"
 echo ""
-echo "🔒 El atacante NO podrá ver las credenciales"
+echo "🔒 El atacante NO podrá ver las credenciales cifradas"
 echo ""
-echo "⚠️  Presiona Ctrl+C después de hacer login"
+echo "⏱️  Esperando 30 segundos para que hagas login..."
+echo "   (O presiona Ctrl+C si ya terminaste)"
 echo ""
 
-wait $MONITOR_PID
+# Esperar 30 segundos
+sleep 30 2>/dev/null || true
+
+# Matar el monitor
+kill $MONITOR_PID 2>/dev/null
+wait $MONITOR_PID 2>/dev/null
 SCRIPT
 
 chmod +x /tmp/demo_https.sh
-bash /tmp/demo_https.sh
+bash /tmp/demo_https.sh 2>/dev/null || true
 
 echo ""
 echo -e "${GREEN}═══════════════════════════════════════════════════════════${NC}"
