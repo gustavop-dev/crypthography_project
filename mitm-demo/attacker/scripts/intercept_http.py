@@ -161,12 +161,16 @@ class HTTPInterceptor:
         print(f"Log file: {self.log_file}")
         print(f"\n🎯 Interceptando tráfico HTTP...")
         print("⚠️  Presiona Ctrl+C para detener\n")
+        print("💡 Capturando tráfico desde:")
+        print("   - Contenedores Docker (172.20.0.x)")
+        print("   - Host (localhost:8080 → contenedor)")
+        print("")
         
         try:
             # Deshabilitar verbose de Scapy
             conf.verb = 0
             
-            # Sniff solo tráfico TCP puerto 80
+            # Sniff TODO el tráfico TCP puerto 80 (incluyendo desde host)
             sniff(
                 iface=self.interface,
                 filter="tcp port 80",
