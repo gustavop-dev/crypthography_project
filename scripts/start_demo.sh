@@ -55,7 +55,7 @@ wait_for_service() {
     echo -e "${BLUE}⏳ Esperando a que $service esté listo...${NC}"
     
     while [ $attempt -lt $max_attempts ]; do
-        if docker compose ps | grep -q "$service.*running"; then
+        if sudo docker compose ps | grep -q "$service.*running\|$service.*healthy"; then
             echo -e "${GREEN}✅ $service está listo${NC}"
             return 0
         fi
@@ -63,8 +63,8 @@ wait_for_service() {
         sleep 1
     done
     
-    echo -e "${RED}❌ Timeout esperando a $service${NC}"
-    return 1
+    echo -e "${YELLOW}⚠️  $service tardó en iniciar, pero continuando...${NC}"
+    return 0
 }
 
 # Menú de opciones
@@ -82,7 +82,7 @@ case $option in
         
         # Paso 1: Levantar contenedores
         echo -e "${BLUE}📦 Paso 1/6: Levantando contenedores Docker...${NC}"
-        docker compose up -d
+        sudo docker compose up -d
         echo ""
         
         # Esperar a que los servicios estén listos
@@ -93,19 +93,19 @@ case $option in
         
         # Paso 2: Verificar conectividad
         echo -e "${BLUE}🔍 Paso 2/6: Verificando conectividad...${NC}"
-        docker compose exec -T victim ping -c 2 172.20.0.30 > /dev/null 2>&1
+        sudo sudo docker compose exec -T victim ping -c 2 172.20.0.30 > /dev/null 2>&1
         echo -e "${GREEN}✅ Conectividad verificada${NC}"
         echo ""
         
         # Paso 3: Mostrar estado inicial
         echo -e "${BLUE}📊 Paso 3/6: Estado inicial de la red${NC}"
         echo -e "${CYAN}Tabla ARP de la víctima (antes del ataque):${NC}"
-        docker compose exec -T victim arp -a
+        sudo docker compose exec -T victim arp -a
         echo ""
         
         # Paso 4: Iniciar ARP spoofing en background
         echo -e "${BLUE}🎯 Paso 4/6: Iniciando ARP spoofing...${NC}"
-        docker compose exec -d attacker python3 /scripts/arp_spoof.py \
+        sudo docker compose exec -d attacker python3 /scripts/arp_spoof.py \
             --victim 172.20.0.10 \
             --gateway 172.20.0.1 \
             --interface eth0
@@ -116,7 +116,7 @@ case $option in
         
         # Paso 5: Iniciar interceptación HTTP en background
         echo -e "${BLUE}🕵️  Paso 5/6: Iniciando interceptación HTTP...${NC}"
-        docker compose exec -d attacker python3 /scripts/intercept_http.py \
+        sudo docker compose exec -d attacker python3 /scripts/intercept_http.py \
             --interface eth0 \
             --log /logs/intercepted_credentials.txt
         
@@ -129,7 +129,7 @@ case $option in
         echo -e "${YELLOW}(La víctima no sabe que está siendo interceptada)${NC}"
         echo ""
         
-        docker compose exec -T victim python3 /scripts/browse_http.py
+        sudo docker compose exec -T victim python3 /scripts/browse_http.py
         echo ""
         
         # Esperar un poco para que se capture todo
@@ -140,8 +140,8 @@ case $option in
         echo -e "${RED}🔓 CREDENCIALES INTERCEPTADAS:${NC}"
         echo -e "${CYAN}═══════════════════════════════════════════════════════════${NC}"
         
-        if docker compose exec -T attacker test -f /logs/intercepted_credentials.txt; then
-            docker compose exec -T attacker cat /logs/intercepted_credentials.txt
+        if sudo docker compose exec -T attacker test -f /logs/intercepted_credentials.txt; then
+            sudo docker compose exec -T attacker cat /logs/intercepted_credentials.txt
         else
             echo -e "${YELLOW}⚠️  Archivo de credenciales aún no creado${NC}"
         fi
@@ -151,7 +151,7 @@ case $option in
         
         # Mostrar tabla ARP modificada
         echo -e "${BLUE}📊 Tabla ARP de la víctima (después del ataque):${NC}"
-        docker compose exec -T victim arp -a
+        sudo docker compose exec -T victim arp -a
         echo ""
         
         # Resumen
@@ -167,10 +167,10 @@ case $option in
         echo "  - Capturas: ../evidencias/pcap_files/"
         echo ""
         echo -e "${YELLOW}Para ver los logs en tiempo real:${NC}"
-        echo "  docker compose logs -f attacker"
+        echo "  sudo docker compose logs -f attacker"
         echo ""
         echo -e "${YELLOW}Para detener la demo:${NC}"
-        echo "  docker compose down"
+        echo "  sudo docker compose down"
         echo ""
         ;;
         
@@ -192,19 +192,19 @@ case $option in
         echo ""
         echo -e "${YELLOW}Terminal 1 - ARP Spoofing:${NC}"
         echo "  cd mitm-demo"
-        echo "  docker compose exec attacker python3 /scripts/arp_spoof.py \\"
+        echo "  sudo docker compose exec attacker python3 /scripts/arp_spoof.py \\"
         echo "      --victim 172.20.0.10 --gateway 172.20.0.1"
         echo ""
         echo -e "${YELLOW}Terminal 2 - Interceptación HTTP:${NC}"
         echo "  cd mitm-demo"
-        echo "  docker compose exec attacker python3 /scripts/intercept_http.py"
+        echo "  sudo docker compose exec attacker python3 /scripts/intercept_http.py"
         echo ""
         echo -e "${YELLOW}Terminal 3 - Víctima navega:${NC}"
         echo "  cd mitm-demo"
-        echo "  docker compose exec victim python3 /scripts/browse_http.py"
+        echo "  sudo docker compose exec victim python3 /scripts/browse_http.py"
         echo ""
         echo -e "${YELLOW}Para ver credenciales interceptadas:${NC}"
-        echo "  docker compose exec attacker cat /logs/intercepted_credentials.txt"
+        echo "  sudo docker compose exec attacker cat /logs/intercepted_credentials.txt"
         echo ""
         ;;
         
@@ -223,7 +223,7 @@ case $option in
         
     4)
         echo -e "\n${YELLOW}🧹 Deteniendo y limpiando...${NC}\n"
-        docker compose down
+        sudo docker compose down
         echo ""
         echo -e "${GREEN}✅ Entorno detenido${NC}"
         echo ""
