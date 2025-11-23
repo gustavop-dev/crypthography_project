@@ -49,10 +49,24 @@ echo -e "${YELLOW}Presiona ENTER para continuar...${NC}"
 read
 
 echo -e "${CYAN}📦 Preparando entorno...${NC}"
-sudo docker compose up -d >/dev/null 2>&1
-sleep 3
 
-echo -e "${GREEN}✅ Contenedores listos${NC}"
+# Limpiar cualquier contenedor previo
+sudo docker compose down >/dev/null 2>&1
+
+# Levantar contenedores frescos
+sudo docker compose up -d >/dev/null 2>&1
+sleep 5
+
+# Copiar scripts necesarios al webserver
+echo -e "${CYAN}📋 Copiando scripts al contenedor...${NC}"
+sudo docker compose cp webserver/monitor_all_traffic.py webserver:/app/ >/dev/null 2>&1
+sudo docker compose cp webserver/generate_cert.sh webserver:/app/ >/dev/null 2>&1
+sudo docker compose cp webserver/start_https.sh webserver:/app/ >/dev/null 2>&1
+
+# Asegurar permisos
+sudo docker compose exec -T webserver chmod +x /app/*.sh >/dev/null 2>&1
+
+echo -e "${GREEN}✅ Contenedores listos (solo HTTP)${NC}"
 echo ""
 
 echo -e "${CYAN}🌐 Servidor HTTP corriendo en: ${YELLOW}http://localhost:8080${NC}"
@@ -131,15 +145,30 @@ echo -e "${BLUE}═════════════════════�
 echo ""
 
 echo -e "${CYAN}🔐 Generando certificado SSL...${NC}"
+
+# Verificar que el script existe
+if ! sudo docker compose exec -T webserver test -f /app/generate_cert.sh; then
+    echo -e "${RED}❌ Error: Script no encontrado. Copiando...${NC}"
+    sudo docker compose cp webserver/generate_cert.sh webserver:/app/
+    sudo docker compose cp webserver/start_https.sh webserver:/app/
+    sudo docker compose exec -T webserver chmod +x /app/*.sh
+fi
+
 sudo docker compose exec -T webserver bash /app/generate_cert.sh
 
 echo ""
-echo -e "${CYAN}🔒 Iniciando servidor HTTPS...${NC}"
+echo -e "${CYAN}🔒 Deteniendo servidor HTTP y iniciando HTTPS...${NC}"
+
+# Detener el servidor HTTP (Django development server)
+sudo docker compose exec -T webserver pkill -f "manage.py runserver" >/dev/null 2>&1 || true
+
+# Esperar un momento
+sleep 2
 
 # Iniciar HTTPS en background
 sudo docker compose exec -d webserver bash /app/start_https.sh
 
-sleep 3
+sleep 5
 
 echo -e "${GREEN}✅ Servidor HTTPS listo${NC}"
 echo ""
@@ -225,10 +254,16 @@ echo ""
 echo -e "${BLUE}Presiona ENTER para finalizar y limpiar...${NC}"
 read
 
-# Limpiar
+# Limpiar completamente
+echo -e "${CYAN}🧹 Limpiando entorno...${NC}"
 sudo docker compose down >/dev/null 2>&1
 
+# Limpiar archivos temporales
+rm -f /tmp/demo_http.sh /tmp/demo_https.sh 2>/dev/null
+
 echo ""
-echo -e "${GREEN}✅ Demo completada${NC}"
+echo -e "${GREEN}✅ Demo completada y entorno limpio${NC}"
 echo -e "${CYAN}Gracias por usar la demostración${NC}"
+echo ""
+echo -e "${YELLOW}💡 Para volver a ejecutar: bash scripts/demo_completa.sh${NC}"
 echo ""
