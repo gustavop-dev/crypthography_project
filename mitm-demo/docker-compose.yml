@@ -1,0 +1,113 @@
+version: '3.8'
+
+# ============================================
+# Docker Compose - MitM Demo Environment
+# Proyecto de Criptografía - UNAL Medellín
+# ============================================
+
+services:
+  # ============================================
+  # WEBSERVER - Django Application
+  # ============================================
+  webserver:
+    build:
+      context: ./webserver
+      dockerfile: Dockerfile
+    container_name: mitm-webserver
+    hostname: webserver
+    networks:
+      mitm-lab-network:
+        ipv4_address: 172.20.0.30
+    ports:
+      - "8080:80"     # HTTP (vulnerable)
+      - "8443:443"    # HTTPS (secure)
+    environment:
+      - DJANGO_SETTINGS_MODULE=webapp.settings
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./webserver/logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ============================================
+  # ATTACKER - Man-in-the-Middle
+  # ============================================
+  attacker:
+    build:
+      context: ./attacker
+      dockerfile: Dockerfile
+    container_name: mitm-attacker
+    hostname: attacker
+    networks:
+      mitm-lab-network:
+        ipv4_address: 172.20.0.20
+    cap_add:
+      - NET_ADMIN      # Required for ARP spoofing
+      - NET_RAW        # Required for packet capture
+    volumes:
+      - ../evidencias/pcap_files:/captures
+      - ../evidencias/logs:/logs
+      - ./attacker/scripts:/scripts
+    stdin_open: true
+    tty: true
+    depends_on:
+      - webserver
+    restart: unless-stopped
+
+  # ============================================
+  # VICTIM - Client
+  # ============================================
+  victim:
+    build:
+      context: ./victim
+      dockerfile: Dockerfile
+    container_name: mitm-victim
+    hostname: victim
+    networks:
+      mitm-lab-network:
+        ipv4_address: 172.20.0.10
+    volumes:
+      - ./victim/scripts:/scripts
+    stdin_open: true
+    tty: true
+    depends_on:
+      - webserver
+    restart: unless-stopped
+
+# ============================================
+# NETWORK CONFIGURATION
+# ============================================
+networks:
+  mitm-lab-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+    driver_opts:
+      com.docker.network.bridge.name: mitm-bridge
+
+# ============================================
+# USAGE
+# ============================================
+# Start all services:
+#   docker compose up -d
+#
+# View logs:
+#   docker compose logs -f
+#   docker compose logs -f attacker
+#
+# Execute commands:
+#   docker compose exec attacker bash
+#   docker compose exec victim python3 /scripts/browse_http.py
+#
+# Stop all services:
+#   docker compose down
+#
+# Stop and remove volumes:
+#   docker compose down -v
+# ============================================

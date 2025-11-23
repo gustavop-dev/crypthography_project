@@ -1,0 +1,16 @@
+# Python dependencies for attacker container
+
+# Network packet manipulation
+scapy>=2.5.0
+
+# Packet capture analysis
+pyshark>=0.6
+
+# HTTP parsing
+dpkt>=1.9.8
+
+# Terminal output formatting
+rich>=13.7.0
+
+# Utilities
+python-dotenv>=1.0.0
