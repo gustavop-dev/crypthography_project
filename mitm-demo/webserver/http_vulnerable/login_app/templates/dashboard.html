@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - MitM Demo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mt-5">
+            <div class="card-header bg-success text-white">
+                <h3>✅ Dashboard</h3>
+            </div>
+            <div class="card-body p-5">
+                <h4>Welcome, {{ user.username }}!</h4>
+                <p class="lead">You have successfully logged in.</p>
+
+                <div class="alert alert-info mt-4" role="alert">
+                    <h5>📊 Your Session Information:</h5>
+                    <ul>
+                        <li><strong>Username:</strong> {{ user.username }}</li>
+                        <li><strong>Email:</strong> {{ user.email|default:"Not set" }}</li>
+                        <li><strong>Staff Status:</strong> {{ user.is_staff|yesno:"Yes,No" }}</li>
+                        <li><strong>Last Login:</strong> {{ user.last_login|date:"Y-m-d H:i:s" }}</li>
+                    </ul>
+                </div>
+
+                <div class="alert alert-warning mt-4" role="alert">
+                    <h5>⚠️ Security Notice:</h5>
+                    <p>This session was established over <strong>HTTP (unencrypted)</strong>.</p>
+                    <p class="mb-0">An attacker performing a Man-in-the-Middle attack could have:</p>
+                    <ul class="mt-2">
+                        <li>Intercepted your login credentials</li>
+                        <li>Stolen your session cookie</li>
+                        <li>Modified the page content</li>
+                        <li>Injected malicious scripts</li>
+                    </ul>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+                    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <h6>🔒 How HTTPS Would Protect You:</h6>
+                <ul class="small">
+                    <li>✅ Credentials encrypted in transit</li>
+                    <li>✅ Session cookies marked as Secure</li>
+                    <li>✅ Server identity verified with certificates</li>
+                    <li>✅ Protection against content modification</li>
+                    <li>✅ HSTS prevents downgrade attacks</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

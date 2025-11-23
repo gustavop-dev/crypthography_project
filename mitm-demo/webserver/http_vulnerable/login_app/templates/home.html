@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - MitM Demo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mt-5">
+            <div class="card-body p-5 text-center">
+                <h1 class="display-4 mb-4">🔓 Vulnerable Web Application</h1>
+                <p class="lead">This is a demonstration of an insecure web application running over HTTP.</p>
+                
+                <div class="alert alert-danger mt-4" role="alert">
+                    <h5>⚠️ Security Warning</h5>
+                    <p class="mb-0">This application transmits data over <strong>HTTP (unencrypted)</strong>. 
+                    All traffic, including passwords, can be intercepted by attackers on the network.</p>
+                </div>
+
+                <div class="mt-4">
+                    <h5>Demo Credentials:</h5>
+                    <p class="text-muted">
+                        <strong>Username:</strong> admin<br>
+                        <strong>Password:</strong> password123
+                    </p>
+                </div>
+
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-3">
+                    Login to Dashboard
+                </a>
+
+                <div class="mt-5 text-muted">
+                    <small>
+                        <strong>Educational Project</strong><br>
+                        Universidad Nacional de Colombia - Sede Medellín<br>
+                        Criptografía y Seguridad - Grupo 6
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
