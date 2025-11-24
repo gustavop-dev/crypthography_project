@@ -204,11 +204,11 @@ bash ../scripts/cleanup.sh
 
 ## 📖 Documentación Detallada
 
+- **[Arquitectura del Sistema](docs/ARQUITECTURA.md)**: Topología de red y componentes
+- **[Guía de Uso Completa](docs/GUIA_USO.md)**: Paso a paso para ejecutar la demo
+- **[Resultados y Análisis](docs/RESULTADOS.md)**: Evidencias y comparativas HTTP vs HTTPS
+- **[Checklist de Seguridad](docs/CHECKLIST_SEGURIDAD.md)**: Lista de verificación
 - **[Plan de Proyecto](PLAN_PROYECTO.md)**: Fases detalladas de implementación
-- **[Guía SSH Hardening](docs/guias/01_guia_ssh_hardening.md)**: Paso a paso para endurecer SSH
-- **[Guía MitM Demo](docs/guias/02_guia_mitm_demo.md)**: Cómo ejecutar la demostración
-- **[Checklist de Seguridad](docs/guias/03_checklist_seguridad.md)**: Lista de verificación
-- **[Informe Técnico](docs/informe_tecnico/main.pdf)**: Informe completo en PDF
 
 ---
 
