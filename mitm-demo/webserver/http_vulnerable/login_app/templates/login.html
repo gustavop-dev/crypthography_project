@@ -5,30 +5,32 @@
 {% block content %}
 <style>
     .login-container {
-        max-width: 400px;
-        margin: 80px auto;
+        max-width: 440px;
+        margin: 100px auto;
     }
     
     .login-card {
         background: #fff;
-        border: 1px solid #e5e5e5;
-        border-radius: 12px;
-        padding: 40px;
+        border: 2px solid #e9ecef;
+        border-radius: 16px;
+        padding: 48px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
     }
     
     .login-title {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 8px;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 12px;
         text-align: center;
-        color: #1a1a1a;
+        color: #111;
+        letter-spacing: -0.5px;
     }
     
     .login-subtitle {
-        font-size: 14px;
+        font-size: 15px;
         color: #666;
         text-align: center;
-        margin-bottom: 32px;
+        margin-bottom: 40px;
     }
     
     .form-group {
@@ -45,17 +47,20 @@
     
     .form-input {
         width: 100%;
-        padding: 12px 16px;
-        border: 1px solid #e5e5e5;
-        border-radius: 8px;
+        padding: 14px 16px;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
         font-size: 15px;
         transition: all 0.2s;
         font-family: inherit;
+        background: #fafafa;
     }
     
     .form-input:focus {
         outline: none;
-        border-color: #1a1a1a;
+        border-color: #111;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
     }
     
     .form-error {
@@ -66,20 +71,23 @@
     
     .btn-submit {
         width: 100%;
-        padding: 12px;
-        background: #1a1a1a;
+        padding: 14px;
+        background: #111;
         color: #fff;
         border: none;
-        border-radius: 8px;
-        font-size: 15px;
+        border-radius: 10px;
+        font-size: 16px;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.2s;
-        margin-top: 8px;
+        transition: all 0.3s;
+        margin-top: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
     
     .btn-submit:hover {
         background: #333;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     }
     
     .hint {
@@ -90,11 +98,11 @@
     }
     
     .info-card {
-        background: #fff;
-        border: 1px solid #e5e5e5;
+        background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+        border: 2px solid #ffcccc;
         border-radius: 12px;
         padding: 24px;
-        margin-top: 24px;
+        margin-top: 32px;
     }
     
     .info-title {

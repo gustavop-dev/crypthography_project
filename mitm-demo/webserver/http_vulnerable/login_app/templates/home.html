@@ -5,101 +5,156 @@
 {% block content %}
 <style>
     .hero {
-        max-width: 720px;
-        margin: 80px auto;
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 120px 24px 80px;
         text-align: center;
     }
     
     .hero h1 {
-        font-size: 48px;
+        font-size: 56px;
         font-weight: 700;
-        letter-spacing: -1.5px;
-        margin-bottom: 16px;
-        color: #1a1a1a;
+        letter-spacing: -2px;
+        margin-bottom: 20px;
+        color: #111;
+        line-height: 1.1;
     }
     
-    .hero p {
-        font-size: 18px;
+    .subtitle {
+        font-size: 20px;
         color: #666;
-        margin-bottom: 48px;
+        margin-bottom: 64px;
+        font-weight: 400;
     }
     
-    .card {
-        background: #fff;
-        border: 1px solid #e5e5e5;
-        border-radius: 12px;
+    .warning-box {
+        background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+        border: 2px solid #ffb84d;
+        border-radius: 16px;
         padding: 32px;
-        margin-bottom: 24px;
+        margin-bottom: 48px;
+        text-align: left;
+        box-shadow: 0 4px 12px rgba(255, 184, 77, 0.1);
     }
     
-    .warning-card {
-        background: #fffbeb;
-        border-color: #fde68a;
+    .warning-icon {
+        font-size: 32px;
+        margin-bottom: 12px;
     }
     
-    .card h3 {
-        font-size: 16px;
+    .warning-title {
+        font-size: 18px;
         font-weight: 600;
         margin-bottom: 12px;
-        color: #1a1a1a;
+        color: #111;
     }
     
-    .card p {
-        font-size: 14px;
+    .warning-text {
+        font-size: 15px;
         color: #666;
-        margin: 0;
+        line-height: 1.6;
     }
     
-    .credentials {
+    .credentials-box {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 24px 32px;
+        margin: 48px 0;
         display: inline-block;
-        background: #f5f5f5;
-        padding: 16px 24px;
-        border-radius: 8px;
-        font-size: 14px;
-        font-family: 'SF Mono', Monaco, monospace;
-        margin: 24px 0;
     }
     
-    .credentials div {
-        margin: 4px 0;
-    }
-    
-    .btn-large {
-        padding: 14px 32px;
-        font-size: 16px;
+    .cred-label {
+        font-size: 13px;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 16px;
         font-weight: 600;
-        border-radius: 8px;
+    }
+    
+    .cred-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 12px 0;
+        font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+        font-size: 16px;
+    }
+    
+    .cred-key {
+        color: #999;
+        min-width: 80px;
+        text-align: right;
+    }
+    
+    .cred-value {
+        color: #111;
+        font-weight: 600;
+    }
+    
+    .btn-hero {
+        display: inline-block;
+        padding: 16px 48px;
+        font-size: 17px;
+        font-weight: 600;
+        background: #111;
+        color: #fff;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        margin-top: 24px;
+    }
+    
+    .btn-hero:hover {
+        background: #333;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     }
     
     .footer {
-        margin-top: 80px;
-        text-align: center;
-        font-size: 13px;
+        margin-top: 100px;
+        padding-top: 32px;
+        border-top: 1px solid #e9ecef;
+        font-size: 14px;
         color: #999;
+    }
+    
+    .footer-line {
+        margin: 4px 0;
     }
 </style>
 
 <div class="hero">
     <h1>Vulnerable Web App</h1>
-    <p>A demonstration of an insecure application running over HTTP</p>
+    <p class="subtitle">An insecure application running over HTTP for educational purposes</p>
     
-    <div class="card warning-card">
-        <h3>Security Warning</h3>
-        <p>This application transmits data over HTTP (unencrypted). All traffic, including passwords, can be intercepted by attackers on the network.</p>
+    <div class="warning-box">
+        <div class="warning-icon">⚠️</div>
+        <div class="warning-title">Security Warning</div>
+        <p class="warning-text">This application transmits data over HTTP without encryption. All traffic, including passwords and session data, can be intercepted by attackers on the network.</p>
     </div>
     
-    <div class="credentials">
-        <div><strong>Username:</strong> admin</div>
-        <div><strong>Password:</strong> password123</div>
+    <div class="credentials-box">
+        <div class="cred-label">Demo Credentials</div>
+        <div class="cred-item">
+            <span class="cred-key">username</span>
+            <span class="cred-value">admin</span>
+        </div>
+        <div class="cred-item">
+            <span class="cred-key">password</span>
+            <span class="cred-value">password123</span>
+        </div>
     </div>
     
     <div>
-        <a href="{% url 'login' %}" class="btn btn-primary btn-large">Continue to Login</a>
+        <a href="{% url 'login' %}" class="btn-hero">Continue to Login →</a>
     </div>
     
     <div class="footer">
-        Universidad Nacional de Colombia — Medellín<br>
-        Cryptography & Security — Group 6
+        <div class="footer-line">Universidad Nacional de Colombia — Medellín</div>
+        <div class="footer-line">Cryptography & Security — Group 6</div>
     </div>
 </div>
 {% endblock %}
