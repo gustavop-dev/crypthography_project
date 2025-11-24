@@ -3,60 +3,170 @@
 {% block title %}Login - MitM Demo{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card mt-5">
-            <div class="card-header bg-primary text-white text-center">
-                <h3>🔐 Login</h3>
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 80px auto;
+    }
+    
+    .login-card {
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 40px;
+    }
+    
+    .login-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        text-align: center;
+        color: #1a1a1a;
+    }
+    
+    .login-subtitle {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 32px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+    }
+    
+    .form-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.2s;
+        font-family: inherit;
+    }
+    
+    .form-input:focus {
+        outline: none;
+        border-color: #1a1a1a;
+    }
+    
+    .form-error {
+        font-size: 13px;
+        color: #dc2626;
+        margin-top: 6px;
+    }
+    
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background: #1a1a1a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 8px;
+    }
+    
+    .btn-submit:hover {
+        background: #333;
+    }
+    
+    .hint {
+        text-align: center;
+        font-size: 13px;
+        color: #999;
+        margin-top: 24px;
+    }
+    
+    .info-card {
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 24px;
+        margin-top: 24px;
+    }
+    
+    .info-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #1a1a1a;
+    }
+    
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .info-list li {
+        font-size: 13px;
+        color: #666;
+        padding: 6px 0;
+        padding-left: 20px;
+        position: relative;
+    }
+    
+    .info-list li:before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #999;
+    }
+</style>
+
+<div class="login-container">
+    <div class="login-card">
+        <h1 class="login-title">Sign In</h1>
+        <p class="login-subtitle">Enter your credentials to continue</p>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                <input type="text" name="username" class="form-input" id="{{ form.username.id_for_label }}" required>
+                {% if form.username.errors %}
+                    <div class="form-error">{{ form.username.errors }}</div>
+                {% endif %}
             </div>
-            <div class="card-body p-4">
-                <div class="alert alert-warning" role="alert">
-                    <strong>⚠️ Insecure Connection!</strong><br>
-                    Your credentials will be sent in <strong>plain text</strong> over HTTP.
-                </div>
 
-                <form method="post">
-                    {% csrf_token %}
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
-                        {{ form.username }}
-                        {% if form.username.errors %}
-                            <div class="text-danger">{{ form.username.errors }}</div>
-                        {% endif %}
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
-                        {{ form.password }}
-                        {% if form.password.errors %}
-                            <div class="text-danger">{{ form.password.errors }}</div>
-                        {% endif %}
-                    </div>
-
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                </form>
-
-                <div class="mt-3 text-center">
-                    <small class="text-muted">
-                        Demo credentials: admin / password123
-                    </small>
-                </div>
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+                <input type="password" name="password" class="form-input" id="{{ form.password.id_for_label }}" required>
+                {% if form.password.errors %}
+                    <div class="form-error">{{ form.password.errors }}</div>
+                {% endif %}
             </div>
+
+            <button type="submit" class="btn-submit">Continue</button>
+        </form>
+
+        <div class="hint">
+            Demo: admin / password123
         </div>
+    </div>
 
-        <div class="card mt-3">
-            <div class="card-body">
-                <h6 class="text-danger">🕵️ What an attacker can see:</h6>
-                <ul class="small">
-                    <li>Your username in plain text</li>
-                    <li>Your password in plain text</li>
-                    <li>Your session cookies</li>
-                    <li>All HTTP headers</li>
-                    <li>Your IP address</li>
-                </ul>
-            </div>
-        </div>
+    <div class="info-card">
+        <div class="info-title">What an attacker can see</div>
+        <ul class="info-list">
+            <li>Username in plain text</li>
+            <li>Password in plain text</li>
+            <li>Session cookies</li>
+            <li>HTTP headers</li>
+            <li>IP address</li>
+        </ul>
     </div>
 </div>
 {% endblock %}

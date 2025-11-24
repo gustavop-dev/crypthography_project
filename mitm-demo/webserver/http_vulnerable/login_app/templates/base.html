@@ -4,57 +4,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}MitM Demo{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+            line-height: 1.6;
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        .card {
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
+        
         .warning-banner {
-            background-color: #ff6b6b;
-            color: white;
-            padding: 10px;
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 24px;
             text-align: center;
-            font-weight: bold;
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 16px 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-brand {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-decoration: none;
+            letter-spacing: -0.3px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .nav-text {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #1a1a1a;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: #333;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #1a1a1a;
+            border: 1px solid #e5e5e5;
+        }
+        
+        .btn-secondary:hover {
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+        
+        .message {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+        
+        .message-success {
+            background: #f0fdf4;
+            border-color: #86efac;
+            color: #166534;
+        }
+        
+        .message-error {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            color: #991b1b;
         }
     </style>
 </head>
 <body>
     <div class="warning-banner">
-        ⚠️ WARNING: HTTP (Unencrypted) - For Educational Purposes Only
+        HTTP (Unencrypted) — Educational Demo
     </div>
     
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">🔓 MitM Demo</a>
-            <div class="navbar-nav ms-auto">
+    <nav>
+        <div class="nav-container">
+            <a class="nav-brand" href="{% url 'home' %}">MitM Demo</a>
+            <div class="nav-links">
                 {% if user.is_authenticated %}
-                    <span class="navbar-text me-3">Hello, {{ user.username }}!</span>
-                    <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Logout</a>
+                    <span class="nav-text">{{ user.username }}</span>
+                    <a class="btn btn-secondary" href="{% url 'logout' %}">Logout</a>
                 {% else %}
-                    <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">Login</a>
+                    <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
                 {% endif %}
             </div>
         </div>
     </nav>
 
-    <div class="container mt-5">
+    <div class="container">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <div class="message message-{{ message.tags }}">
                     {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             {% endfor %}
         {% endif %}
 
         {% block content %}{% endblock %}
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

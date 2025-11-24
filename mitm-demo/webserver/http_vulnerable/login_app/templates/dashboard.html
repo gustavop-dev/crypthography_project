@@ -3,57 +3,171 @@
 {% block title %}Dashboard - MitM Demo{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card mt-5">
-            <div class="card-header bg-success text-white">
-                <h3>✅ Dashboard</h3>
+<style>
+    .dashboard {
+        max-width: 720px;
+        margin: 60px auto;
+    }
+    
+    .welcome {
+        text-align: center;
+        margin-bottom: 48px;
+    }
+    
+    .welcome h1 {
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: -1px;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+    }
+    
+    .welcome p {
+        font-size: 16px;
+        color: #666;
+    }
+    
+    .card {
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 24px;
+    }
+    
+    .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        color: #1a1a1a;
+    }
+    
+    .info-grid {
+        display: grid;
+        gap: 12px;
+    }
+    
+    .info-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #f5f5f5;
+        font-size: 14px;
+    }
+    
+    .info-item:last-child {
+        border-bottom: none;
+    }
+    
+    .info-label {
+        color: #666;
+    }
+    
+    .info-value {
+        color: #1a1a1a;
+        font-weight: 500;
+    }
+    
+    .warning-card {
+        background: #fffbeb;
+        border-color: #fde68a;
+    }
+    
+    .list-clean {
+        list-style: none;
+        padding: 0;
+        margin: 16px 0 0 0;
+    }
+    
+    .list-clean li {
+        font-size: 14px;
+        color: #666;
+        padding: 6px 0;
+        padding-left: 20px;
+        position: relative;
+    }
+    
+    .list-clean li:before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #999;
+    }
+    
+    .actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 32px;
+    }
+    
+    .btn-danger {
+        background: #dc2626;
+        color: #fff;
+    }
+    
+    .btn-danger:hover {
+        background: #b91c1c;
+    }
+    
+    .protection-card {
+        background: #f0fdf4;
+        border-color: #86efac;
+    }
+</style>
+
+<div class="dashboard">
+    <div class="welcome">
+        <h1>Welcome back</h1>
+        <p>{{ user.username }}</p>
+    </div>
+    
+    <div class="card">
+        <div class="card-title">Session Information</div>
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Username</span>
+                <span class="info-value">{{ user.username }}</span>
             </div>
-            <div class="card-body p-5">
-                <h4>Welcome, {{ user.username }}!</h4>
-                <p class="lead">You have successfully logged in.</p>
-
-                <div class="alert alert-info mt-4" role="alert">
-                    <h5>📊 Your Session Information:</h5>
-                    <ul>
-                        <li><strong>Username:</strong> {{ user.username }}</li>
-                        <li><strong>Email:</strong> {{ user.email|default:"Not set" }}</li>
-                        <li><strong>Staff Status:</strong> {{ user.is_staff|yesno:"Yes,No" }}</li>
-                        <li><strong>Last Login:</strong> {{ user.last_login|date:"Y-m-d H:i:s" }}</li>
-                    </ul>
-                </div>
-
-                <div class="alert alert-warning mt-4" role="alert">
-                    <h5>⚠️ Security Notice:</h5>
-                    <p>This session was established over <strong>HTTP (unencrypted)</strong>.</p>
-                    <p class="mb-0">An attacker performing a Man-in-the-Middle attack could have:</p>
-                    <ul class="mt-2">
-                        <li>Intercepted your login credentials</li>
-                        <li>Stolen your session cookie</li>
-                        <li>Modified the page content</li>
-                        <li>Injected malicious scripts</li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
-                    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
-                </div>
+            <div class="info-item">
+                <span class="info-label">Email</span>
+                <span class="info-value">{{ user.email|default:"Not set" }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Staff Status</span>
+                <span class="info-value">{{ user.is_staff|yesno:"Yes,No" }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Last Login</span>
+                <span class="info-value">{{ user.last_login|date:"Y-m-d H:i" }}</span>
             </div>
         </div>
+    </div>
 
-        <div class="card mt-3">
-            <div class="card-body">
-                <h6>🔒 How HTTPS Would Protect You:</h6>
-                <ul class="small">
-                    <li>✅ Credentials encrypted in transit</li>
-                    <li>✅ Session cookies marked as Secure</li>
-                    <li>✅ Server identity verified with certificates</li>
-                    <li>✅ Protection against content modification</li>
-                    <li>✅ HSTS prevents downgrade attacks</li>
-                </ul>
-            </div>
-        </div>
+    <div class="card warning-card">
+        <div class="card-title">Security Notice</div>
+        <p style="font-size: 14px; color: #666; margin: 0;">This session was established over HTTP (unencrypted). An attacker could have:</p>
+        <ul class="list-clean">
+            <li>Intercepted your login credentials</li>
+            <li>Stolen your session cookie</li>
+            <li>Modified the page content</li>
+            <li>Injected malicious scripts</li>
+        </ul>
+    </div>
+
+    <div class="card protection-card">
+        <div class="card-title">How HTTPS Would Protect You</div>
+        <ul class="list-clean">
+            <li>Credentials encrypted in transit</li>
+            <li>Session cookies marked as Secure</li>
+            <li>Server identity verified with certificates</li>
+            <li>Protection against content modification</li>
+            <li>HSTS prevents downgrade attacks</li>
+        </ul>
+    </div>
+
+    <div class="actions">
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
     </div>
 </div>
 {% endblock %}

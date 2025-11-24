@@ -3,40 +3,103 @@
 {% block title %}Home - MitM Demo{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card mt-5">
-            <div class="card-body p-5 text-center">
-                <h1 class="display-4 mb-4">🔓 Vulnerable Web Application</h1>
-                <p class="lead">This is a demonstration of an insecure web application running over HTTP.</p>
-                
-                <div class="alert alert-danger mt-4" role="alert">
-                    <h5>⚠️ Security Warning</h5>
-                    <p class="mb-0">This application transmits data over <strong>HTTP (unencrypted)</strong>. 
-                    All traffic, including passwords, can be intercepted by attackers on the network.</p>
-                </div>
+<style>
+    .hero {
+        max-width: 720px;
+        margin: 80px auto;
+        text-align: center;
+    }
+    
+    .hero h1 {
+        font-size: 48px;
+        font-weight: 700;
+        letter-spacing: -1.5px;
+        margin-bottom: 16px;
+        color: #1a1a1a;
+    }
+    
+    .hero p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 48px;
+    }
+    
+    .card {
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 24px;
+    }
+    
+    .warning-card {
+        background: #fffbeb;
+        border-color: #fde68a;
+    }
+    
+    .card h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #1a1a1a;
+    }
+    
+    .card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+    
+    .credentials {
+        display: inline-block;
+        background: #f5f5f5;
+        padding: 16px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: 'SF Mono', Monaco, monospace;
+        margin: 24px 0;
+    }
+    
+    .credentials div {
+        margin: 4px 0;
+    }
+    
+    .btn-large {
+        padding: 14px 32px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 8px;
+    }
+    
+    .footer {
+        margin-top: 80px;
+        text-align: center;
+        font-size: 13px;
+        color: #999;
+    }
+</style>
 
-                <div class="mt-4">
-                    <h5>Demo Credentials:</h5>
-                    <p class="text-muted">
-                        <strong>Username:</strong> admin<br>
-                        <strong>Password:</strong> password123
-                    </p>
-                </div>
-
-                <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-3">
-                    Login to Dashboard
-                </a>
-
-                <div class="mt-5 text-muted">
-                    <small>
-                        <strong>Educational Project</strong><br>
-                        Universidad Nacional de Colombia - Sede Medellín<br>
-                        Criptografía y Seguridad - Grupo 6
-                    </small>
-                </div>
-            </div>
-        </div>
+<div class="hero">
+    <h1>Vulnerable Web App</h1>
+    <p>A demonstration of an insecure application running over HTTP</p>
+    
+    <div class="card warning-card">
+        <h3>Security Warning</h3>
+        <p>This application transmits data over HTTP (unencrypted). All traffic, including passwords, can be intercepted by attackers on the network.</p>
+    </div>
+    
+    <div class="credentials">
+        <div><strong>Username:</strong> admin</div>
+        <div><strong>Password:</strong> password123</div>
+    </div>
+    
+    <div>
+        <a href="{% url 'login' %}" class="btn btn-primary btn-large">Continue to Login</a>
+    </div>
+    
+    <div class="footer">
+        Universidad Nacional de Colombia — Medellín<br>
+        Cryptography & Security — Group 6
     </div>
 </div>
 {% endblock %}
