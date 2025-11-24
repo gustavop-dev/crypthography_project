@@ -96,28 +96,47 @@ docker ps
 ### 1. Clonar el Repositorio
 
 ```bash
-git clone <URL_DEL_REPOSITORIO>
+git clone https://github.com/gustavop-dev/crypthography_project.git
 cd cryptography_project
 ```
 
-### 2. Crear Entorno Virtual Python (Recomendado)
+### 2. Verificar Requisitos
 
 ```bash
+# Verificar Docker
+docker --version
+docker compose version
+
+# Verificar permisos (Linux)
+sudo usermod -aG docker $USER
+newgrp docker  # O cerrar sesión y volver a entrar
+```
+
+### 3. ¡Listo! Ejecutar Demo
+
+```bash
+# Demo completa automatizada
+bash scripts/demo_completa.sh
+```
+
+**Nota:** No necesitas instalar Python ni dependencias. Todo corre dentro de Docker.
+
+---
+
+### Instalación Avanzada (Opcional)
+
+Solo si quieres desarrollar o modificar el código:
+
+```bash
+# Crear entorno virtual Python
 python3 -m venv venv
-source venv/bin/activate  # En Linux/Mac
-# venv\Scripts\activate   # En Windows
-```
+source venv/bin/activate
 
-### 3. Instalar Dependencias
-
-```bash
+# Instalar dependencias
 pip install -r requirements.txt
-```
 
-### 4. Verificar Instalación
-
-```bash
-python3 -c "import scapy, django, paramiko; print('✅ Dependencias instaladas correctamente')"
+# Verificar
+python3 -c "import scapy, django, paramiko; print('✅ OK')"
 ```
 
 ---
@@ -160,9 +179,77 @@ cryptography_project/
 
 ---
 
-## 🎯 Uso Básico
+## 🎯 Inicio Rápido
 
-### Fase 1: SSH Hardening
+### ⚡ Demo Automatizada (Recomendado)
+
+**Un solo comando para ejecutar la demostración completa:**
+
+```bash
+# Desde la raíz del proyecto
+bash scripts/demo_completa.sh
+```
+
+Este script ejecuta automáticamente:
+- ✅ Limpia el entorno
+- ✅ Levanta contenedores Docker
+- ✅ **PARTE 1:** Demo HTTP (credenciales interceptadas)
+- ✅ **PARTE 2:** Demo HTTPS (tráfico cifrado)
+- ✅ Comparación lado a lado
+- ✅ Limpieza al finalizar
+
+**Duración:** ~5 minutos (interactivo)
+
+---
+
+### 📋 Uso Manual Paso a Paso
+
+#### Opción 1: Solo HTTP (Vulnerable)
+
+```bash
+cd mitm-demo
+
+# 1. Levantar entorno
+sudo docker compose up -d
+
+# 2. Abrir navegador en http://localhost:8080
+# 3. Hacer login con: admin / password123
+
+# 4. Ver credenciales interceptadas
+sudo docker compose exec webserver python /app/monitor_traffic.py
+
+# 5. Limpiar
+sudo docker compose down
+```
+
+#### Opción 2: Solo HTTPS (Seguro)
+
+```bash
+cd mitm-demo
+
+# 1. Levantar entorno
+sudo docker compose up -d
+
+# 2. Generar certificado SSL
+sudo docker compose exec webserver bash /app/generate_cert.sh
+
+# 3. Iniciar servidor HTTPS
+sudo docker compose exec webserver bash /app/start_https.sh
+
+# 4. Abrir navegador en https://localhost:8443
+# 5. Aceptar certificado autofirmado
+# 6. Hacer login
+
+# 7. Ver tráfico cifrado
+sudo docker compose exec webserver python /app/monitor_traffic.py
+
+# 8. Limpiar
+sudo docker compose down
+```
+
+---
+
+### 🔐 SSH Hardening (Opcional)
 
 ```bash
 cd ssh-hardening
@@ -176,28 +263,6 @@ sudo systemctl restart sshd
 
 # 3. Configurar autenticación con claves
 bash scripts/setup_ssh_keys.sh
-
-# 4. (Opcional) Configurar 2FA
-bash scripts/setup_2fa.sh
-```
-
-### Fase 2: Demostración MitM
-
-```bash
-cd mitm-demo
-
-# 1. Levantar entorno Docker
-docker compose up -d
-
-# 2. Ejecutar demo completa
-bash ../scripts/start_demo.sh
-
-# 3. Ver resultados en tiempo real
-docker compose logs -f attacker
-
-# 4. Detener y limpiar
-docker compose down
-bash ../scripts/cleanup.sh
 ```
 
 ---
