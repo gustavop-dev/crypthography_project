@@ -135,7 +135,28 @@ bash scripts/demo_completa_cross_platform.sh
 - **Linux:** Puede requerir `sudo` (el script lo detecta automáticamente)
 - **macOS:** NO uses `sudo`, Docker Desktop ya tiene permisos
 - **Windows:** Usa Git Bash o WSL 2, NO uses `sudo`
-- No necesitas instalar Python, todo corre en Docker
+- **NO necesitas instalar Python** - La demo MitM corre 100% en Docker
+
+---
+
+### Instalación Python (Solo para SSH Hardening - Opcional)
+
+Si quieres usar los scripts de auditoría SSH (opcional):
+
+```bash
+# Crear entorno virtual
+python3 -m venv venv
+source venv/bin/activate # Linux/macOS
+# venv\Scripts\activate # Windows
+
+# Instalar dependencias
+pip install -r requirements.txt
+
+# Verificar
+python3 scripts/audit_ssh.py --help
+```
+
+**Nota:** Esto NO es necesario para la demo MitM principal.
 
 ---
 

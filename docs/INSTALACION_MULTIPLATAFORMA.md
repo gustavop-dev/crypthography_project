@@ -344,6 +344,50 @@ Si todos estos comandos funcionan, **estás listo para ejecutar la demo**.
 
 ---
 
+## Instalación de Dependencias Python (Solo para SSH Hardening)
+
+**IMPORTANTE:** La demo MitM NO requiere Python en tu máquina (todo corre en Docker).
+
+Solo necesitas instalar Python si quieres usar los scripts de **SSH Hardening**:
+
+### Linux/macOS
+
+```bash
+# Verificar Python
+python3 --version
+# Debe ser 3.10 o superior
+
+# Crear entorno virtual (opcional pero recomendado)
+cd cryptography_project
+python3 -m venv venv
+source venv/bin/activate
+
+# Instalar dependencias
+pip install -r requirements.txt
+```
+
+### Windows
+
+```bash
+# En PowerShell o Git Bash
+python --version
+# Debe ser 3.10 o superior
+
+# Crear entorno virtual
+cd cryptography_project
+python -m venv venv
+venv\Scripts\activate  # PowerShell
+# O
+source venv/Scripts/activate  # Git Bash
+
+# Instalar dependencias
+pip install -r requirements.txt
+```
+
+**Nota:** Si solo vas a ejecutar la demo MitM, puedes omitir completamente esta sección.
+
+---
+
 ## Ejecutar la Demo
 
 Una vez Docker esté instalado y funcionando:
