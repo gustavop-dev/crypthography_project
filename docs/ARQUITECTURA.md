@@ -7,37 +7,30 @@ El proyecto utiliza una arquitectura de red aislada mediante Docker para simular
 ### Diagrama de Red
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Red Docker: 172.20.0.0/16                    │
-│                                                                 │
-│  ┌──────────────┐      ┌──────────────┐      ┌──────────────┐ │
-│  │   VICTIM     │      │   ATTACKER   │      │  WEBSERVER   │ │
-│  │ 172.20.0.10  │◄────►│ 172.20.0.20  │◄────►│ 172.20.0.30  │ │
-│  │              │      │              │      │              │ │
-│  │ - Cliente    │      │ - ARP Spoof  │      │ - Django App │ │
-│  │ - Navegador  │      │ - tcpdump    │      │ - HTTP:80    │ │
-│  │              │      │ - Scapy      │      │ - HTTPS:443  │ │
-│  └──────────────┘      └──────────────┘      └──────────────┘ │
-│         │                     │                      │         │
-│         └─────────────────────┴──────────────────────┘         │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              │ Port Mapping
-                              ▼
-                    ┌──────────────────┐
-                    │   HOST MACHINE   │
-                    │                  │
-                    │  localhost:8080  │ ──► HTTP
-                    │  localhost:8443  │ ──► HTTPS
-                    └──────────────────┘
+
+ Red Docker: 172.20.0.0/16 
+
+ VICTIM ATTACKER WEBSERVER 
+ 172.20.0.10 172.20.0.20 172.20.0.30 
+
+ - Cliente - ARP Spoof - Django App 
+ - Navegador - tcpdump - HTTP:80 
+ - Scapy - HTTPS:443 
+
+ Port Mapping
+
+ HOST MACHINE 
+
+ localhost:8080 HTTP
+ localhost:8443 HTTPS
+
 ```
 
 ## Componentes del Sistema
 
 ### 1. Contenedor Victim (Cliente)
 
-**IP:** 172.20.0.10  
+**IP:** 172.20.0.10 
 **Función:** Simula un usuario legítimo navegando en la red
 
 **Características:**
@@ -52,7 +45,7 @@ Victim → Attacker (cree que es el gateway) → Webserver
 
 ### 2. Contenedor Attacker (Atacante)
 
-**IP:** 172.20.0.20  
+**IP:** 172.20.0.20 
 **Función:** Interceptar y analizar tráfico de red
 
 **Herramientas instaladas:**
@@ -74,7 +67,7 @@ Victim → Attacker (cree que es el gateway) → Webserver
 
 ### 3. Contenedor Webserver
 
-**IP:** 172.20.0.30  
+**IP:** 172.20.0.30 
 **Función:** Servidor web vulnerable (HTTP) y seguro (HTTPS)
 
 **Tecnologías:**
@@ -107,10 +100,9 @@ Victim → Attacker (cree que es el gateway) → Webserver
 
 ```
 Attacker ejecuta:
-┌────────────────────────────────────────┐
-│ arpspoof -i eth0 -t 172.20.0.10       │
-│          172.20.0.30                   │
-└────────────────────────────────────────┘
+
+ arpspoof -i eth0 -t 172.20.0.10 
+ 172.20.0.30 
 
 Resultado:
 - Victim cree que Attacker es Webserver
@@ -121,38 +113,37 @@ Resultado:
 
 ```
 Attacker ejecuta:
-┌────────────────────────────────────────┐
-│ tcpdump -i eth0 -s 65535               │
-│         -w capture.pcap                │
-│         port 80 or port 443            │
-└────────────────────────────────────────┘
+
+ tcpdump -i eth0 -s 65535 
+ -w capture.pcap 
+ port 80 or port 443 
 
 Monitor en tiempo real:
-┌────────────────────────────────────────┐
-│ python3 monitor_traffic.py             │
-│                                        │
-│ - Detecta POST /login/                │
-│ - Extrae username y password          │
-│ - Muestra en consola                  │
-└────────────────────────────────────────┘
+
+ python3 monitor_traffic.py 
+
+ - Detecta POST /login/ 
+ - Extrae username y password 
+ - Muestra en consola 
+
 ```
 
 ### Fase 4: Interceptación HTTP
 
 ```
 Usuario hace login:
-  http://localhost:8080/login/
-  username=admin&password=password123
+ http://localhost:8080/login/
+ username=admin&password=password123
 
 Attacker captura:
-┌────────────────────────────────────────┐
-│ 🚨 CREDENCIALES INTERCEPTADAS          │
-│                                        │
-│ Usuario: admin                         │
-│ Password: password123                  │
-│ IP: 172.20.0.1                        │
-│ Timestamp: 2025-11-24 03:30:45        │
-└────────────────────────────────────────┘
+
+ CREDENCIALES INTERCEPTADAS 
+
+ Usuario: admin 
+ Password: password123 
+ IP: 172.20.0.1 
+ Timestamp: 2025-11-24 03:30:45 
+
 ```
 
 ### Fase 5: Protección con HTTPS
@@ -161,17 +152,17 @@ Attacker captura:
 Webserver cambia a HTTPS (puerto 443)
 
 Usuario hace login:
-  https://localhost:8443/login/
-  
+ https://localhost:8443/login/
+
 Attacker captura:
-┌────────────────────────────────────────┐
-│ 🔒 TRÁFICO CIFRADO DETECTADO           │
-│                                        │
-│ Datos: ██████████████████████████     │
-│ Hex: 16 03 03 00 a5 01 00 00 a1...   │
-│                                        │
-│ ❌ Imposible leer credenciales        │
-└────────────────────────────────────────┘
+
+ TRÁFICO CIFRADO DETECTADO 
+
+ Datos: 
+ Hex: 16 03 03 00 a5 01 00 00 a1... 
+
+ Imposible leer credenciales 
+
 ```
 
 ## Configuración de Red Docker
@@ -180,48 +171,48 @@ Attacker captura:
 
 ```yaml
 networks:
-  mitm-lab-network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16
-          gateway: 172.20.0.1
+ mitm-lab-network:
+ driver: bridge
+ ipam:
+ config:
+ - subnet: 172.20.0.0/16
+ gateway: 172.20.0.1
 
 services:
-  victim:
-    networks:
-      mitm-lab-network:
-        ipv4_address: 172.20.0.10
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
+ victim:
+ networks:
+ mitm-lab-network:
+ ipv4_address: 172.20.0.10
+ cap_add:
+ - NET_ADMIN
+ - NET_RAW
 
-  attacker:
-    networks:
-      mitm-lab-network:
-        ipv4_address: 172.20.0.20
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
-    privileged: true  # Para IP forwarding
+ attacker:
+ networks:
+ mitm-lab-network:
+ ipv4_address: 172.20.0.20
+ cap_add:
+ - NET_ADMIN
+ - NET_RAW
+ privileged: true # Para IP forwarding
 
-  webserver:
-    networks:
-      mitm-lab-network:
-        ipv4_address: 172.20.0.30
-    ports:
-      - "8080:80"    # HTTP
-      - "8443:443"   # HTTPS
+ webserver:
+ networks:
+ mitm-lab-network:
+ ipv4_address: 172.20.0.30
+ ports:
+ - "8080:80" # HTTP
+ - "8443:443" # HTTPS
 ```
 
 ## Seguridad del Entorno
 
 ### Aislamiento
 
-✅ **Red completamente aislada** del host  
-✅ **Sin acceso a Internet** desde contenedores  
-✅ **Tráfico controlado** solo entre contenedores  
-✅ **Puertos mapeados** solo para acceso del host  
+ **Red completamente aislada** del host 
+ **Sin acceso a Internet** desde contenedores 
+ **Tráfico controlado** solo entre contenedores 
+ **Puertos mapeados** solo para acceso del host 
 
 ### Permisos
 
@@ -261,14 +252,14 @@ docker compose logs -f webserver
 
 ```
 evidencias/
-├── pcap_files/
-│   ├── http_capture.pcap      # Tráfico HTTP
-│   ├── https_capture.pcap     # Tráfico HTTPS
-│   └── arp_spoof.pcap         # Paquetes ARP
-└── logs/
-    ├── attacker.log           # Logs del atacante
-    ├── webserver.log          # Logs del servidor
-    └── credentials.log        # Credenciales capturadas
+ pcap_files/
+ http_capture.pcap # Tráfico HTTP
+ https_capture.pcap # Tráfico HTTPS
+ arp_spoof.pcap # Paquetes ARP
+ logs/
+ attacker.log # Logs del atacante
+ webserver.log # Logs del servidor
+ credentials.log # Credenciales capturadas
 ```
 
 ## Análisis con Wireshark
@@ -307,15 +298,15 @@ El diseño permite agregar más contenedores:
 ```yaml
 # Agregar más víctimas
 victim2:
-  networks:
-    mitm-lab-network:
-      ipv4_address: 172.20.0.11
+ networks:
+ mitm-lab-network:
+ ipv4_address: 172.20.0.11
 
 # Agregar servidor DNS falso
 dns-server:
-  networks:
-    mitm-lab-network:
-      ipv4_address: 172.20.0.40
+ networks:
+ mitm-lab-network:
+ ipv4_address: 172.20.0.40
 ```
 
 ## Referencias Técnicas

@@ -1,12 +1,12 @@
 # SSH Hardening - Fase 2 y 3
 
-## 📚 Descripción
+## Descripción
 
 Este módulo contiene todo lo relacionado con el análisis, auditoría y endurecimiento (hardening) de OpenSSH.
 
 ---
 
-## 🎯 Objetivos
+## Objetivos
 
 1. **Analizar** la arquitectura de SSH según RFC 4251/4253
 2. **Identificar** configuraciones inseguras comunes
@@ -16,29 +16,29 @@ Este módulo contiene todo lo relacionado con el análisis, auditoría y endurec
 
 ---
 
-## 📂 Estructura
+## Estructura
 
 ```
 ssh-hardening/
-├── README.md                    # Este archivo
-├── configs/
-│   ├── README.md               # Explicación de cada parámetro
-│   ├── sshd_config.weak        # Configuración débil (baseline)
-│   ├── sshd_config.hardened    # Configuración endurecida
-│   └── ssh_config.client       # Configuración cliente segura
-├── scripts/
-│   ├── audit_ssh.py            # Auditoría automatizada
-│   ├── setup_ssh_keys.sh       # Generación de claves
-│   ├── setup_2fa.sh            # Configuración 2FA
-│   └── test_ssh_security.py    # Tests automatizados
-└── resultados/
-    ├── audit_before.txt        # Auditoría pre-hardening
-    └── audit_after.txt         # Auditoría post-hardening
+ README.md # Este archivo
+ configs/
+ README.md # Explicación de cada parámetro
+ sshd_config.weak # Configuración débil (baseline)
+ sshd_config.hardened # Configuración endurecida
+ ssh_config.client # Configuración cliente segura
+ scripts/
+ audit_ssh.py # Auditoría automatizada
+ setup_ssh_keys.sh # Generación de claves
+ setup_2fa.sh # Configuración 2FA
+ test_ssh_security.py # Tests automatizados
+ resultados/
+ audit_before.txt # Auditoría pre-hardening
+ audit_after.txt # Auditoría post-hardening
 ```
 
 ---
 
-## 🔍 Fase 2: Análisis de SSH
+## Fase 2: Análisis de SSH
 
 ### Conceptos Clave
 
@@ -52,19 +52,19 @@ SSH (Secure Shell) es un protocolo de red que permite:
 **Capas del protocolo:**
 
 1. **Transport Layer (RFC 4253)**
-   - Autenticación del servidor
-   - Cifrado de datos
-   - Integridad de datos
-   - Compresión (opcional)
+ - Autenticación del servidor
+ - Cifrado de datos
+ - Integridad de datos
+ - Compresión (opcional)
 
 2. **User Authentication Layer (RFC 4252)**
-   - Autenticación del cliente
-   - Métodos: password, public key, keyboard-interactive
+ - Autenticación del cliente
+ - Métodos: password, public key, keyboard-interactive
 
 3. **Connection Layer (RFC 4254)**
-   - Multiplexación de canales
-   - Port forwarding
-   - X11 forwarding
+ - Multiplexación de canales
+ - Port forwarding
+ - X11 forwarding
 
 #### Modelo TOFU (Trust On First Use)
 
@@ -93,25 +93,25 @@ En la primera conexión a un servidor SSH:
 
 **Por orden de seguridad (más seguro primero):**
 
-1. **Public Key + 2FA** ⭐⭐⭐⭐⭐
-   - Clave privada + código OTP
-   - Protección contra robo de credenciales
+1. **Public Key + 2FA** 
+ - Clave privada + código OTP
+ - Protección contra robo de credenciales
 
-2. **Public Key (ED25519/RSA 4096)** ⭐⭐⭐⭐
-   - Solo clave privada
-   - Muy seguro si la clave está protegida
+2. **Public Key (ED25519/RSA 4096)** 
+ - Solo clave privada
+ - Muy seguro si la clave está protegida
 
-3. **Password + 2FA** ⭐⭐⭐
-   - Contraseña + código OTP
-   - Mejor que solo contraseña
+3. **Password + 2FA** 
+ - Contraseña + código OTP
+ - Mejor que solo contraseña
 
-4. **Password** ⭐
-   - Solo contraseña
-   - Vulnerable a fuerza bruta
+4. **Password** 
+ - Solo contraseña
+ - Vulnerable a fuerza bruta
 
 ---
 
-## ⚠️ Configuración Débil (Baseline)
+## Configuración Débil (Baseline)
 
 ### Parámetros Inseguros Comunes
 
@@ -129,7 +129,7 @@ En la primera conexión a un servidor SSH:
 
 ---
 
-## ✅ Configuración Endurecida
+## Configuración Endurecida
 
 ### Mejores Prácticas
 
@@ -149,7 +149,7 @@ En la primera conexión a un servidor SSH:
 
 ---
 
-## 🛠️ Uso
+## Uso
 
 ### 1. Auditar Configuración Actual
 
@@ -167,7 +167,7 @@ sudo sshd -t
 ### 2. Aplicar Configuración Débil (Para Demo)
 
 ```bash
-# ⚠️ SOLO EN ENTORNO DE PRUEBA
+# SOLO EN ENTORNO DE PRUEBA
 sudo cp configs/sshd_config.weak /etc/ssh/sshd_config
 sudo systemctl restart sshd
 
@@ -213,69 +213,69 @@ bash scripts/setup_2fa.sh
 
 ---
 
-## 📊 Comparativa: Antes vs Después
+## Comparativa: Antes vs Después
 
 | Aspecto | Configuración Débil | Configuración Endurecida |
 |---------|---------------------|--------------------------|
-| Login root | ✅ Permitido | ❌ Bloqueado |
-| Contraseñas | ✅ Permitidas | ❌ Solo claves |
+| Login root | Permitido | Bloqueado |
+| Contraseñas | Permitidas | Solo claves |
 | Algoritmos | 3DES, RC4 | ChaCha20, AES-GCM |
 | Intentos de login | 6 | 3 |
-| 2FA | ❌ Deshabilitado | ✅ Habilitado |
+| 2FA | Deshabilitado | Habilitado |
 | Timeout sesión | ∞ | 10 minutos |
 | Lista de usuarios | Todos | Solo permitidos |
 
 ---
 
-## 🔒 Recomendaciones Adicionales
+## Recomendaciones Adicionales
 
 ### A Nivel de Sistema
 
 1. **Firewall (UFW/iptables)**
-   ```bash
-   sudo ufw allow 22/tcp
-   sudo ufw enable
-   ```
+ ```bash
+ sudo ufw allow 22/tcp
+ sudo ufw enable
+```
 
 2. **Fail2ban** (Protección contra fuerza bruta)
-   ```bash
-   sudo apt install fail2ban
-   sudo systemctl enable fail2ban
-   ```
+ ```bash
+ sudo apt install fail2ban
+ sudo systemctl enable fail2ban
+```
 
 3. **Cambiar puerto SSH** (Seguridad por oscuridad)
-   ```
-   Port 2222  # En lugar de 22
-   ```
+ ```
+ Port 2222 # En lugar de 22
+```
 
 4. **Monitoreo de logs**
-   ```bash
-   sudo tail -f /var/log/auth.log
-   ```
+ ```bash
+ sudo tail -f /var/log/auth.log
+```
 
 ### A Nivel de Usuario
 
 1. **Proteger clave privada**
-   ```bash
-   chmod 600 ~/.ssh/id_ed25519
-   chmod 700 ~/.ssh
-   ```
+ ```bash
+ chmod 600 ~/.ssh/id_ed25519
+ chmod 700 ~/.ssh
+```
 
 2. **Usar passphrase en claves**
-   ```bash
-   ssh-keygen -t ed25519 -C "email@example.com"
-   # Ingresar passphrase fuerte
-   ```
+ ```bash
+ ssh-keygen -t ed25519 -C "email@example.com"
+ # Ingresar passphrase fuerte
+```
 
 3. **SSH Agent** (Para no escribir passphrase cada vez)
-   ```bash
-   eval "$(ssh-agent -s)"
-   ssh-add ~/.ssh/id_ed25519
-   ```
+ ```bash
+ eval "$(ssh-agent -s)"
+ ssh-add ~/.ssh/id_ed25519
+```
 
 ---
 
-## 📚 Referencias
+## Referencias
 
 - [RFC 4251 - SSH Protocol Architecture](https://tools.ietf.org/html/rfc4251)
 - [RFC 4252 - SSH Authentication Protocol](https://tools.ietf.org/html/rfc4252)
@@ -286,7 +286,7 @@ bash scripts/setup_2fa.sh
 
 ---
 
-## ⚠️ Advertencias
+## Advertencias
 
 - **NUNCA** apliques configuraciones de prueba en servidores de producción
 - **SIEMPRE** haz backup de `/etc/ssh/sshd_config` antes de modificar
@@ -295,5 +295,5 @@ bash scripts/setup_2fa.sh
 
 ---
 
-**Última actualización:** Noviembre 2025  
+**Última actualización:** Noviembre 2025 
 **Responsable:** José Daniel Moreno Ceballos

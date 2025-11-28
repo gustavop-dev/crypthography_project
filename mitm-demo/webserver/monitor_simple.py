@@ -11,11 +11,11 @@ from datetime import datetime
 
 def print_header():
     print("\n" + "="*60)
-    print("🕵️  HTTP/HTTPS TRAFFIC MONITOR")
+    print("  HTTP/HTTPS TRAFFIC MONITOR")
     print("Proyecto de Criptografía - UNAL Medellín")
     print("="*60)
-    print("\n🎯 Monitoreando tráfico web...")
-    print("⚠️  Presiona Ctrl+C para detener\n")
+    print("\n Monitoreando tráfico web...")
+    print("  Presiona Ctrl+C para detener\n")
 
 def monitor_traffic():
     """Monitorea el tráfico HTTP y HTTPS"""
@@ -49,7 +49,7 @@ def monitor_traffic():
                 post_buffer = [line]
                 if not shown_http:
                     timestamp = datetime.now().strftime('%H:%M:%S')
-                    print(f"\n📡 [{timestamp}] HTTP POST detectado")
+                    print(f"\n [{timestamp}] HTTP POST detectado")
                     print("   Ruta: /login/")
                     shown_http = True
             
@@ -64,11 +64,11 @@ def monitor_traffic():
                 
                 if username and password:
                     print("\n" + "="*60)
-                    print("🔓 CREDENCIALES INTERCEPTADAS (TEXTO PLANO)")
+                    print(" CREDENCIALES INTERCEPTADAS (TEXTO PLANO)")
                     print("="*60)
                     print(f"   Usuario: {username.group(1)}")
                     print(f"   Contraseña: {password.group(1)}")
-                    print("\n   ❌ Completamente visibles para el atacante")
+                    print("\n    Completamente visibles para el atacante")
                     print("="*60 + "\n")
                     collecting_post = False
                     post_buffer = []
@@ -82,24 +82,24 @@ def monitor_traffic():
             if ':443' in line or '.443' in line:
                 if not shown_https and len(line) > 20:
                     timestamp = datetime.now().strftime('%H:%M:%S')
-                    print(f"\n🔒 [{timestamp}] Tráfico HTTPS detectado")
+                    print(f"\n [{timestamp}] Tráfico HTTPS detectado")
                     print("   Puerto: 443")
                     print("\n" + "="*60)
-                    print("🔐 DATOS CIFRADOS")
+                    print(" DATOS CIFRADOS")
                     print("="*60)
                     print("   Los datos están cifrados con TLS/SSL")
                     print("   Ejemplo de datos cifrados:")
-                    print("   " + "█" * 50)
-                    print("\n   ✅ Las credenciales están PROTEGIDAS")
-                    print("   ✅ Imposible leer sin la clave de cifrado")
+                    print("   " + "" * 50)
+                    print("\n    Las credenciales están PROTEGIDAS")
+                    print("    Imposible leer sin la clave de cifrado")
                     print("="*60 + "\n")
                     shown_https = True
         
     except KeyboardInterrupt:
-        print("\n\n⚠️  Monitoreo detenido")
+        print("\n\n  Monitoreo detenido")
         sys.exit(0)
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\n Error: {e}")
         sys.exit(1)
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 # Checklist de Seguridad
 
-## 🔐 SSH Hardening
+## SSH Hardening
 
 ### Configuración del Servidor
 
@@ -34,7 +34,7 @@
 
 ---
 
-## 🌐 Seguridad Web (HTTPS)
+## Seguridad Web (HTTPS)
 
 ### Certificados SSL/TLS
 
@@ -69,7 +69,7 @@
 
 ---
 
-## 🛡️ Protección contra MitM
+## Protección contra MitM
 
 ### Red
 
@@ -88,7 +88,7 @@
 
 ---
 
-## 📊 Monitoreo y Auditoría
+## Monitoreo y Auditoría
 
 - [ ] Logs centralizados
 - [ ] Alertas de seguridad configuradas
@@ -98,7 +98,7 @@
 
 ---
 
-## ✅ Verificación
+## Verificación
 
 Usa estos comandos para verificar:
 

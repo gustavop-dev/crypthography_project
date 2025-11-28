@@ -32,7 +32,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',  # ⚠️ DISABLED for demo - INSECURE!
+    # 'django.middleware.csrf.CsrfViewMiddleware',  #  DISABLED for demo - INSECURE!
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -102,12 +102,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # These are intentionally insecure for demonstration
 
 # CSRF settings (keep enabled for basic functionality)
-CSRF_COOKIE_SECURE = False  # ⚠️ Insecure: CSRF cookie over HTTP
-SESSION_COOKIE_SECURE = False  # ⚠️ Insecure: Session cookie over HTTP
+CSRF_COOKIE_SECURE = False  #  Insecure: CSRF cookie over HTTP
+SESSION_COOKIE_SECURE = False  #  Insecure: Session cookie over HTTP
 
 # No HTTPS enforcement
-SECURE_SSL_REDIRECT = False  # ⚠️ No HTTPS redirect
-SECURE_HSTS_SECONDS = 0  # ⚠️ No HSTS
+SECURE_SSL_REDIRECT = False  #  No HTTPS redirect
+SECURE_HSTS_SECONDS = 0  #  No HSTS
 SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 SECURE_HSTS_PRELOAD = False
 

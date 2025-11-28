@@ -1,6 +1,6 @@
 # Guía de Uso Completa
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 1. [Requisitos Previos](#requisitos-previos)
 2. [Instalación](#instalación)
@@ -92,14 +92,14 @@ bash scripts/demo_completa.sh
 ```
 
 Este script ejecuta automáticamente:
-1. ✅ Limpia el entorno
-2. ✅ Levanta contenedores
-3. ✅ Configura red
-4. ✅ Inicia servidor HTTP
-5. ✅ Captura credenciales en texto plano
-6. ✅ Cambia a HTTPS
-7. ✅ Muestra tráfico cifrado
-8. ✅ Limpia al finalizar
+1. Limpia el entorno
+2. Levanta contenedores
+3. Configura red
+4. Inicia servidor HTTP
+5. Captura credenciales en texto plano
+6. Cambia a HTTPS
+7. Muestra tráfico cifrado
+8. Limpia al finalizar
 
 ### Opción 2: Paso a Paso Manual
 
@@ -119,10 +119,10 @@ sudo docker compose ps
 Deberías ver:
 
 ```
-NAME             STATUS
-mitm-attacker    Up
-mitm-victim      Up
-mitm-webserver   Up (healthy)
+NAME STATUS
+mitm-attacker Up
+mitm-victim Up
+mitm-webserver Up (healthy)
 ```
 
 #### Paso 2: Acceder a la Aplicación Web
@@ -151,14 +151,14 @@ Deberías ver:
 
 ```
 ============================================================
-🕵️  HTTP TRAFFIC MONITOR
+ HTTP TRAFFIC MONITOR
 Proyecto de Criptografía - UNAL Medellín
 ============================================================
 
-🎯 Monitoreando tráfico HTTP en el servidor...
-   Capturando requests desde tu navegador
+ Monitoreando tráfico HTTP en el servidor...
+ Capturando requests desde tu navegador
 
-⚠️  Presiona Ctrl+C para detener
+ Presiona Ctrl+C para detener
 ```
 
 #### Paso 4: Hacer Login HTTP
@@ -167,8 +167,8 @@ En tu navegador:
 
 1. Click en "Continue to Login"
 2. Ingresa credenciales:
-   - **Username:** admin
-   - **Password:** password123
+ - **Username:** admin
+ - **Password:** password123
 3. Click "Continue"
 
 #### Paso 5: Ver Credenciales Interceptadas
@@ -176,7 +176,7 @@ En tu navegador:
 En la terminal del monitor verás:
 
 ```
-🚨 [21:30:45] CREDENCIALES INTERCEPTADAS
+ [21:30:45] CREDENCIALES INTERCEPTADAS
 
 ============================================================
 Usuario: admin
@@ -185,8 +185,8 @@ IP Origen: 172.17.0.1
 Timestamp: 2025-11-24 21:30:45
 ============================================================
 
-⚠️  Estas credenciales fueron capturadas en TEXTO PLANO
-⚠️  Cualquier atacante en la red puede verlas
+ Estas credenciales fueron capturadas en TEXTO PLANO
+ Cualquier atacante en la red puede verlas
 ```
 
 #### Paso 6: Cambiar a HTTPS
@@ -228,22 +228,22 @@ sudo docker compose exec webserver python /app/monitor_traffic.py
 Verás:
 
 ```
-🔒 [21:35:20] Tráfico HTTPS detectado
-   Puerto: 443 (HTTPS)
+ [21:35:20] Tráfico HTTPS detectado
+ Puerto: 443 (HTTPS)
 
 ============================================================
-🔐 DATOS CIFRADOS INTERCEPTADOS
+ DATOS CIFRADOS INTERCEPTADOS
 ============================================================
-   El atacante puede ver el tráfico, pero está CIFRADO
+ El atacante puede ver el tráfico, pero está CIFRADO
 
-   Datos capturados (muestra real):
-   21:35:20.123456 IP 172.17.0.1.█████ > 172.20.0.30.443: Flags [P.], seq 1:█
+ Datos capturados (muestra real):
+ 21:35:20.123456 IP 172.17.0.1. > 172.20.0.30.443: Flags [P.], seq 1:
 
-   Hex (primeros bytes): 16 03 03 00 a5 01 00 00 a1 03 03 5f 8e...
+ Hex (primeros bytes): 16 03 03 00 a5 01 00 00 a1 03 03 5f 8e...
 
-   ✅ Las credenciales están CIFRADAS con TLS/SSL
-   ✅ Imposible leer el contenido sin la clave privada
-   ✅ El atacante solo ve datos binarios sin sentido
+ Las credenciales están CIFRADAS con TLS/SSL
+ Imposible leer el contenido sin la clave privada
+ El atacante solo ve datos binarios sin sentido
 ============================================================
 ```
 
@@ -314,8 +314,8 @@ sudo docker compose exec attacker python3
 from scapy.all import *
 
 def packet_handler(pkt):
-    if pkt.haslayer(TCP) and pkt.haslayer(Raw):
-        print(pkt[Raw].load)
+ if pkt.haslayer(TCP) and pkt.haslayer(Raw):
+ print(pkt[Raw].load)
 
 sniff(iface="eth0", prn=packet_handler, filter="port 80")
 ```
@@ -378,7 +378,7 @@ sudo kill -9 <PID>
 
 # O cambiar el puerto en docker-compose.yml
 ports:
-  - "8081:80"  # Cambiar 8080 por 8081
+ - "8081:80" # Cambiar 8080 por 8081
 ```
 
 ### Problema: Contenedores no inician
@@ -530,10 +530,10 @@ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mitm
 
 Después de completar la demo:
 
-1. ✅ Revisar [ARQUITECTURA.md](ARQUITECTURA.md) para entender el diseño
-2. ✅ Leer [RESULTADOS.md](RESULTADOS.md) para ver análisis detallado
-3. ✅ Consultar [SSH_HARDENING.md](SSH_HARDENING.md) para configuración SSH
-4. ✅ Ver [CHECKLIST_SEGURIDAD.md](CHECKLIST_SEGURIDAD.md) para mejores prácticas
+1. Revisar [ARQUITECTURA.md](ARQUITECTURA.md) para entender el diseño
+2. Leer [RESULTADOS.md](RESULTADOS.md) para ver análisis detallado
+3. Consultar [SSH_HARDENING.md](SSH_HARDENING.md) para configuración SSH
+4. Ver [CHECKLIST_SEGURIDAD.md](CHECKLIST_SEGURIDAD.md) para mejores prácticas
 
 ---
 

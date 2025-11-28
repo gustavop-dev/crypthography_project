@@ -1,22 +1,22 @@
 # MitM Demo Environment
 
-## 📋 Descripción
+## Descripción
 
 Entorno Docker completo para demostración de ataque Man-in-the-Middle sobre tráfico HTTP.
 
-## 🏗️ Arquitectura
+## Arquitectura
 
 ```
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│   VICTIM     │    │   ATTACKER   │    │  WEBSERVER   │
-│ 172.20.0.10  │◄──►│ 172.20.0.20  │◄──►│ 172.20.0.30  │
-│              │    │              │    │              │
-│  Cliente     │    │  MitM        │    │  Django      │
-│  HTTP        │    │  ARP Spoof   │    │  HTTP:80     │
-└──────────────┘    └──────────────┘    └──────────────┘
+
+ VICTIM ATTACKER WEBSERVER 
+ 172.20.0.10 172.20.0.20 172.20.0.30 
+
+ Cliente MitM Django 
+ HTTP ARP Spoof HTTP:80 
+
 ```
 
-## 🚀 Inicio Rápido
+## Inicio Rápido
 
 ### 1. Levantar el Entorno
 
@@ -40,15 +40,15 @@ O desde el contenedor victim:
 docker compose exec victim python3 /scripts/browse_http.py
 ```
 
-## 🎯 Demostración del Ataque
+## Demostración del Ataque
 
 ### Paso 1: Iniciar ARP Spoofing
 
 ```bash
 docker compose exec attacker python3 /scripts/arp_spoof.py \
-    --victim 172.20.0.10 \
-    --gateway 172.20.0.1 \
-    --interface eth0
+ --victim 172.20.0.10 \
+ --gateway 172.20.0.1 \
+ --interface eth0
 ```
 
 ### Paso 2: Iniciar Interceptación HTTP
@@ -71,7 +71,7 @@ docker compose exec victim python3 /scripts/browse_http.py
 docker compose exec attacker cat /logs/intercepted_credentials.txt
 ```
 
-## 📊 Componentes
+## Componentes
 
 ### Victim (172.20.0.10)
 - Cliente que navega por HTTP
@@ -83,18 +83,18 @@ docker compose exec attacker cat /logs/intercepted_credentials.txt
 - Captura tráfico de red
 - Intercepta credenciales HTTP
 - Scripts:
-  - `arp_spoof.py` - ARP spoofing
-  - `capture_traffic.py` - Captura de tráfico
-  - `intercept_http.py` - Interceptación HTTP
+ - `arp_spoof.py` - ARP spoofing
+ - `capture_traffic.py` - Captura de tráfico
+ - `intercept_http.py` - Interceptación HTTP
 
 ### Webserver (172.20.0.30)
 - Aplicación Django con login
 - Corre sobre HTTP (puerto 80)
 - Credenciales demo:
-  - Usuario: `admin`
-  - Contraseña: `password123`
+ - Usuario: `admin`
+ - Contraseña: `password123`
 
-## 🛠️ Comandos Útiles
+## Comandos Útiles
 
 ### Ver Logs
 
@@ -150,7 +150,7 @@ docker compose exec attacker tshark -r /captures/traffic_*.pcap
 docker cp mitm-attacker:/captures/traffic.pcap ./evidencias/pcap_files/
 ```
 
-## 🧹 Limpieza
+## Limpieza
 
 ```bash
 # Detener contenedores
@@ -163,20 +163,20 @@ docker compose down -v
 docker system prune -a
 ```
 
-## ⚠️ Advertencias
+## Advertencias
 
 1. **Uso Educativo Únicamente**: Este entorno es solo para aprendizaje
 2. **Red Aislada**: Todo ocurre en una red Docker aislada
 3. **No Usar en Producción**: Configuraciones intencionalmente inseguras
 4. **Credenciales de Demo**: No usar credenciales reales
 
-## 📚 Documentación Adicional
+## Documentación Adicional
 
 - [Arquitectura Docker](../docs/ARQUITECTURA_DOCKER.md)
 - [Victim Container](victim/README.md)
 - [Attacker Container](attacker/README.md)
 
-## 🎓 Objetivos de Aprendizaje
+## Objetivos de Aprendizaje
 
 1. Entender cómo funciona ARP spoofing
 2. Ver el peligro de HTTP sin cifrado
@@ -186,5 +186,5 @@ docker system prune -a
 
 ---
 
-**Universidad Nacional de Colombia - Sede Medellín**  
+**Universidad Nacional de Colombia - Sede Medellín** 
 **Criptografía y Seguridad - Grupo 6**

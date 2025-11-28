@@ -9,51 +9,51 @@
 
 ---
 
-## 📚 Descripción del Proyecto
+## Descripción del Proyecto
 
 Este proyecto académico tiene como objetivo:
 
 1. **Analizar y endurecer la seguridad del protocolo SSH (Secure Shell)**
-   - Estudio de la arquitectura SSH (RFC 4251/4253)
-   - Implementación de configuraciones seguras (hardening)
-   - Autenticación con claves públicas y 2FA
+ - Estudio de la arquitectura SSH (RFC 4251/4253)
+ - Implementación de configuraciones seguras (hardening)
+ - Autenticación con claves públicas y 2FA
 
 2. **Demostrar de forma controlada un ataque Man-in-the-Middle (MitM)**
-   - Simulación sobre tráfico HTTP sin cifrado
-   - Captura e interceptación de credenciales
-   - Evidenciar la importancia del cifrado (HTTPS/TLS)
+ - Simulación sobre tráfico HTTP sin cifrado
+ - Captura e interceptación de credenciales
+ - Evidenciar la importancia del cifrado (HTTPS/TLS)
 
 3. **Proponer contramedidas prácticas**
-   - Configuración de HTTPS con HSTS
-   - Buenas prácticas de seguridad en redes
-   - Checklist de defensa
+ - Configuración de HTTPS con HSTS
+ - Buenas prácticas de seguridad en redes
+ - Checklist de defensa
 
 ---
 
-## 👥 Integrantes - Grupo 6
+## Integrantes - Grupo 6
 
 - **José Daniel Moreno Ceballos**
 - **David Duque Diaz**
 - **Gustavo Adolfo Pérez Pérez**
 
-**Profesor:** John Bayron Baena Giraldo  
-**Curso:** Criptografía y Seguridad  
-**Departamento de Matemáticas**  
+**Profesor:** John Bayron Baena Giraldo 
+**Curso:** Criptografía y Seguridad 
+**Departamento de Matemáticas** 
 **Universidad Nacional de Colombia - Sede Medellín**
 
 ---
 
-## ⚠️ ADVERTENCIA - USO ÉTICO Y LEGAL
+## ADVERTENCIA - USO ÉTICO Y LEGAL
 
 ```
-🚨 IMPORTANTE: Este proyecto es EXCLUSIVAMENTE para fines educativos 🚨
+ IMPORTANTE: Este proyecto es EXCLUSIVAMENTE para fines educativos 
 
-✅ PERMITIDO:
+ PERMITIDO:
 - Ejecutar en entornos de laboratorio controlados (Docker)
 - Usar con fines académicos y de aprendizaje
 - Compartir conocimiento de forma responsable
 
-❌ PROHIBIDO:
+ PROHIBIDO:
 - Atacar sistemas de terceros sin autorización
 - Ejecutar en redes de producción
 - Usar fuera del contexto educativo
@@ -64,13 +64,13 @@ Todos los participantes han dado su consentimiento para las pruebas.
 
 ---
 
-## 🛠️ Requisitos del Sistema
+## Requisitos del Sistema
 
 ### Sistemas Operativos Soportados
 
-✅ **Linux** (Ubuntu 20.04+, Debian, Fedora, Arch, etc.)  
-✅ **macOS** (10.15 Catalina o superior, Intel y Apple Silicon)  
-✅ **Windows** (10/11 con WSL 2 y Docker Desktop)
+ **Linux** (Ubuntu 20.04+, Debian, Fedora, Arch, etc.) 
+ **macOS** (10.15 Catalina o superior, Intel y Apple Silicon) 
+ **Windows** (10/11 con WSL 2 y Docker Desktop)
 
 ### Software Necesario
 
@@ -96,17 +96,17 @@ docker ps
 
 ---
 
-## 🚀 Instalación Rápida
+## Instalación Rápida
 
 ### 1. Instalar Docker
 
 **Elige tu sistema operativo:**
 
-- 🐧 **Linux:** [Guía de instalación](docs/INSTALACION_MULTIPLATAFORMA.md#-linux-ubuntu-debian-fedora-arch-etc)
-- 🍎 **macOS:** [Descargar Docker Desktop](https://docs.docker.com/desktop/install/mac-install/)
-- 🪟 **Windows:** [Descargar Docker Desktop](https://docs.docker.com/desktop/install/windows-install/) + WSL 2
+- **Linux:** [Guía de instalación](docs/INSTALACION_MULTIPLATAFORMA.md#-linux-ubuntu-debian-fedora-arch-etc)
+- **macOS:** [Descargar Docker Desktop](https://docs.docker.com/desktop/install/mac-install/)
+- **Windows:** [Descargar Docker Desktop](https://docs.docker.com/desktop/install/windows-install/) + WSL 2
 
-📖 **[Guía completa de instalación multiplataforma](docs/INSTALACION_MULTIPLATAFORMA.md)**
+ **[Guía completa de instalación multiplataforma](docs/INSTALACION_MULTIPLATAFORMA.md)**
 
 ### 2. Clonar el Repositorio
 
@@ -132,10 +132,10 @@ bash scripts/demo_completa_cross_platform.sh
 ```
 
 **Notas importantes:**
-- ✅ **Linux:** Puede requerir `sudo` (el script lo detecta automáticamente)
-- ✅ **macOS:** NO uses `sudo`, Docker Desktop ya tiene permisos
-- ✅ **Windows:** Usa Git Bash o WSL 2, NO uses `sudo`
-- ✅ No necesitas instalar Python, todo corre en Docker
+- **Linux:** Puede requerir `sudo` (el script lo detecta automáticamente)
+- **macOS:** NO uses `sudo`, Docker Desktop ya tiene permisos
+- **Windows:** Usa Git Bash o WSL 2, NO uses `sudo`
+- No necesitas instalar Python, todo corre en Docker
 
 ---
 
@@ -152,52 +152,52 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Verificar
-python3 -c "import scapy, django, paramiko; print('✅ OK')"
+python3 -c "import scapy, django, paramiko; print(' OK')"
 ```
 
 ---
 
-## 📂 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 cryptography_project/
-├── PLAN_PROYECTO.md           # Plan detallado de implementación
-├── README.md                  # Este archivo
-├── requirements.txt           # Dependencias Python
-│
-├── docs/                      # 📚 Documentación
-│   ├── informe_tecnico/      # Informe en LaTeX
-│   ├── guias/                # Guías paso a paso
-│   └── diagramas/            # Diagramas de red
-│
-├── ssh-hardening/             # 🔐 Configuración y hardening de SSH
-│   ├── configs/              # Archivos de configuración
-│   ├── scripts/              # Scripts de auditoría y setup
-│   └── resultados/           # Resultados de auditorías
-│
-├── mitm-demo/                 # 🎭 Demostración de ataque MitM
-│   ├── docker-compose.yml    # Orquestación de contenedores
-│   ├── victim/               # Contenedor cliente (víctima)
-│   ├── attacker/             # Contenedor atacante
-│   ├── webserver/            # Servidor web Django (HTTP/HTTPS)
-│   └── network/              # Configuración de red
-│
-├── evidencias/                # 📸 Capturas y logs
-│   ├── screenshots/          # Capturas de pantalla
-│   ├── pcap_files/           # Archivos de captura de tráfico
-│   └── logs/                 # Logs de las pruebas
-│
-└── scripts/                   # 🛠️ Scripts auxiliares
-    ├── setup_environment.sh
-    ├── start_demo.sh
-    └── cleanup.sh
+ PLAN_PROYECTO.md # Plan detallado de implementación
+ README.md # Este archivo
+ requirements.txt # Dependencias Python
+
+ docs/ # Documentación
+ informe_tecnico/ # Informe en LaTeX
+ guias/ # Guías paso a paso
+ diagramas/ # Diagramas de red
+
+ ssh-hardening/ # Configuración y hardening de SSH
+ configs/ # Archivos de configuración
+ scripts/ # Scripts de auditoría y setup
+ resultados/ # Resultados de auditorías
+
+ mitm-demo/ # Demostración de ataque MitM
+ docker-compose.yml # Orquestación de contenedores
+ victim/ # Contenedor cliente (víctima)
+ attacker/ # Contenedor atacante
+ webserver/ # Servidor web Django (HTTP/HTTPS)
+ network/ # Configuración de red
+
+ evidencias/ # Capturas y logs
+ screenshots/ # Capturas de pantalla
+ pcap_files/ # Archivos de captura de tráfico
+ logs/ # Logs de las pruebas
+
+ scripts/ # Scripts auxiliares
+ setup_environment.sh
+ start_demo.sh
+ cleanup.sh
 ```
 
 ---
 
-## 🎯 Inicio Rápido
+## Inicio Rápido
 
-### ⚡ Demo Automatizada (Recomendado)
+### Demo Automatizada (Recomendado)
 
 **Un solo comando para ejecutar la demostración completa:**
 
@@ -207,18 +207,18 @@ bash scripts/demo_completa.sh
 ```
 
 Este script ejecuta automáticamente:
-- ✅ Limpia el entorno
-- ✅ Levanta contenedores Docker
-- ✅ **PARTE 1:** Demo HTTP (credenciales interceptadas)
-- ✅ **PARTE 2:** Demo HTTPS (tráfico cifrado)
-- ✅ Comparación lado a lado
-- ✅ Limpieza al finalizar
+- Limpia el entorno
+- Levanta contenedores Docker
+- **PARTE 1:** Demo HTTP (credenciales interceptadas)
+- **PARTE 2:** Demo HTTPS (tráfico cifrado)
+- Comparación lado a lado
+- Limpieza al finalizar
 
 **Duración:** ~5 minutos (interactivo)
 
 ---
 
-### 📋 Uso Manual Paso a Paso
+### Uso Manual Paso a Paso
 
 #### Opción 1: Solo HTTP (Vulnerable)
 
@@ -265,7 +265,7 @@ sudo docker compose down
 
 ---
 
-### 🔐 SSH Hardening (Opcional)
+### SSH Hardening (Opcional)
 
 ```bash
 cd ssh-hardening
@@ -283,7 +283,7 @@ bash scripts/setup_ssh_keys.sh
 
 ---
 
-## 📖 Documentación Detallada
+## Documentación Detallada
 
 - **[Instalación Multiplataforma](docs/INSTALACION_MULTIPLATAFORMA.md)**: Linux, macOS y Windows
 - **[Arquitectura del Sistema](docs/ARQUITECTURA.md)**: Topología de red y componentes
@@ -294,7 +294,7 @@ bash scripts/setup_ssh_keys.sh
 
 ---
 
-## 🔬 Componentes Técnicos
+## Componentes Técnicos
 
 ### SSH Hardening
 - Deshabilitación de autenticación por contraseña
@@ -317,7 +317,7 @@ bash scripts/setup_ssh_keys.sh
 
 ---
 
-## 🧪 Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 | Categoría | Tecnología |
 |-----------|------------|
@@ -330,20 +330,20 @@ bash scripts/setup_ssh_keys.sh
 
 ---
 
-## 📊 Resultados Esperados
+## Resultados Esperados
 
 Al finalizar el proyecto, se obtendrá:
 
-✅ Configuración de SSH endurecida y auditada  
-✅ Demostración funcional de ataque MitM sobre HTTP  
-✅ Evidencias de protección mediante HTTPS  
-✅ Informe técnico completo  
-✅ Guías reproducibles para replicar el laboratorio  
-✅ Checklist de seguridad aplicable en producción  
+Configuración de SSH endurecida y auditada 
+Demostración funcional de ataque MitM sobre HTTP 
+Evidencias de protección mediante HTTPS 
+Informe técnico completo 
+Guías reproducibles para replicar el laboratorio 
+Checklist de seguridad aplicable en producción 
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Docker no inicia contenedores
 ```bash
@@ -373,7 +373,7 @@ pip install -r requirements.txt
 
 ---
 
-## 📚 Referencias
+## Referencias
 
 - [RFC 4251 - SSH Protocol Architecture](https://tools.ietf.org/html/rfc4251)
 - [RFC 4253 - SSH Transport Layer Protocol](https://tools.ietf.org/html/rfc4253)
@@ -383,13 +383,13 @@ pip install -r requirements.txt
 
 ---
 
-## 📝 Licencia
+## Licencia
 
 Este proyecto es de **uso académico exclusivamente**. No se permite su uso comercial ni su aplicación en entornos de producción sin las debidas autorizaciones.
 
 ---
 
-## 📧 Contacto
+## Contacto
 
 Para preguntas sobre este proyecto:
 - **Curso:** Criptografía y Seguridad
@@ -398,6 +398,6 @@ Para preguntas sobre este proyecto:
 
 ---
 
-**Última actualización:** Noviembre 2025  
-**Versión:** 1.0  
-**Estado:** 🚧 En Desarrollo
+**Última actualización:** Noviembre 2025 
+**Versión:** 1.0 
+**Estado:** En Desarrollo

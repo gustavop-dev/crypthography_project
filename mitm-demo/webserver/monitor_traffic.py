@@ -11,12 +11,12 @@ from datetime import datetime
 
 def print_header():
     print("\n" + "="*60)
-    print("🕵️  HTTP TRAFFIC MONITOR")
+    print("  HTTP TRAFFIC MONITOR")
     print("Proyecto de Criptografía - UNAL Medellín")
     print("="*60)
-    print("\n🎯 Monitoreando tráfico HTTP en el servidor...")
+    print("\n Monitoreando tráfico HTTP en el servidor...")
     print("   Capturando requests desde tu navegador")
-    print("\n⚠️  Presiona Ctrl+C para detener\n")
+    print("\n  Presiona Ctrl+C para detener\n")
 
 def extract_credentials(data):
     """Extrae credenciales del POST data"""
@@ -67,7 +67,7 @@ def monitor_traffic():
                 in_post = True
                 post_lines = []
                 timestamp = datetime.now().strftime('%H:%M:%S')
-                print(f"\n📡 [{timestamp}] HTTP POST Request detectado")
+                print(f"\n [{timestamp}] HTTP POST Request detectado")
                 print(f"   Ruta: /login/")
             
             # Acumular líneas del POST
@@ -80,7 +80,7 @@ def monitor_traffic():
                 
                 if credentials and len(credentials) >= 2:
                     print("\n" + "="*60)
-                    print("🔓 CREDENCIALES INTERCEPTADAS!")
+                    print(" CREDENCIALES INTERCEPTADAS!")
                     print("="*60)
                     
                     if 'username' in credentials:
@@ -104,10 +104,10 @@ def monitor_traffic():
                 # Verificar que hay datos reales (no solo headers vacíos)
                 if len(line) > 30:
                     timestamp = datetime.now().strftime('%H:%M:%S')
-                    print(f"\n🔒 [{timestamp}] Tráfico HTTPS detectado")
+                    print(f"\n [{timestamp}] Tráfico HTTPS detectado")
                     print("   Puerto: 443 (HTTPS)")
                     print("\n" + "="*60)
-                    print("🔐 DATOS CIFRADOS INTERCEPTADOS")
+                    print(" DATOS CIFRADOS INTERCEPTADOS")
                     print("="*60)
                     print("   El atacante puede ver el tráfico, pero está CIFRADO")
                     
@@ -115,8 +115,8 @@ def monitor_traffic():
                     print("\n   Datos capturados (muestra real):")
                     # Tomar una porción de la línea y mostrarla
                     sample = line.strip()[:80] if len(line) > 80 else line.strip()
-                    # Reemplazar caracteres no imprimibles con █
-                    visual = ''.join('█' if (ord(c) < 32 or ord(c) > 126) else c for c in sample)
+                    # Reemplazar caracteres no imprimibles con 
+                    visual = ''.join('' if (ord(c) < 32 or ord(c) > 126) else c for c in sample)
                     print(f"   {visual}")
                     
                     # Mostrar bytes en hexadecimal (real)
@@ -124,9 +124,9 @@ def monitor_traffic():
                     if hex_bytes:
                         print(f"\n   Hex (primeros bytes): {hex_bytes}...")
                     
-                    print("\n   ✅ Las credenciales están CIFRADAS con TLS/SSL")
-                    print("   ✅ Imposible leer el contenido sin la clave privada")
-                    print("   ✅ El atacante solo ve datos binarios sin sentido")
+                    print("\n    Las credenciales están CIFRADAS con TLS/SSL")
+                    print("    Imposible leer el contenido sin la clave privada")
+                    print("    El atacante solo ve datos binarios sin sentido")
                     print("="*60 + "\n")
                     https_shown = True
             
@@ -135,10 +135,10 @@ def monitor_traffic():
                 buffer = buffer[-50:]
         
     except KeyboardInterrupt:
-        print("\n\n⚠️  Monitoreo detenido")
+        print("\n\n  Monitoreo detenido")
         sys.exit(0)
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\n Error: {e}")
         sys.exit(1)
 
 if __name__ == '__main__':

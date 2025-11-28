@@ -4,7 +4,7 @@ Esta guía te ayudará a instalar y ejecutar el proyecto en **Linux**, **macOS**
 
 ---
 
-## 🐧 Linux (Ubuntu, Debian, Fedora, Arch, etc.)
+## Linux (Ubuntu, Debian, Fedora, Arch, etc.)
 
 ### Requisitos
 
@@ -86,7 +86,7 @@ bash scripts/demo_completa_cross_platform.sh
 
 ---
 
-## 🍎 macOS
+## macOS
 
 ### Requisitos
 
@@ -100,8 +100,8 @@ bash scripts/demo_completa_cross_platform.sh
 
 1. Ve a [Docker Desktop para Mac](https://docs.docker.com/desktop/install/mac-install/)
 2. Descarga la versión para tu chip:
-   - **Apple Silicon (M1/M2/M3):** Docker Desktop for Mac (Apple Silicon)
-   - **Intel:** Docker Desktop for Mac (Intel)
+ - **Apple Silicon (M1/M2/M3):** Docker Desktop for Mac (Apple Silicon)
+ - **Intel:** Docker Desktop for Mac (Intel)
 3. Abre el archivo `.dmg` descargado
 4. Arrastra Docker a la carpeta Applications
 5. Abre Docker desde Applications
@@ -145,7 +145,7 @@ bash scripts/demo_completa_cross_platform.sh
 
 ---
 
-## 🪟 Windows
+## Windows
 
 ### Requisitos
 
@@ -246,7 +246,7 @@ bash scripts/demo_completa_cross_platform.sh
 
 ---
 
-## 🔧 Troubleshooting Multiplataforma
+## Troubleshooting Multiplataforma
 
 ### Linux
 
@@ -318,7 +318,7 @@ Solución:
 
 ---
 
-## ✅ Verificación de Instalación
+## Verificación de Instalación
 
 En **cualquier sistema operativo**, ejecuta:
 
@@ -344,7 +344,7 @@ Si todos estos comandos funcionan, **estás listo para ejecutar la demo**.
 
 ---
 
-## 🚀 Ejecutar la Demo
+## Ejecutar la Demo
 
 Una vez Docker esté instalado y funcionando:
 
@@ -361,24 +361,24 @@ El script detectará automáticamente tu sistema operativo y usará los comandos
 
 ---
 
-## 📝 Notas Importantes
+## Notas Importantes
 
 ### Linux
-- ✅ Puede requerir `sudo` si no estás en el grupo docker
-- ✅ El script lo detecta automáticamente
+- Puede requerir `sudo` si no estás en el grupo docker
+- El script lo detecta automáticamente
 
 ### macOS
-- ✅ **NO** uses `sudo` con Docker Desktop
-- ✅ Asegúrate de que Docker Desktop esté corriendo antes de ejecutar
+- **NO** uses `sudo` con Docker Desktop
+- Asegúrate de que Docker Desktop esté corriendo antes de ejecutar
 
 ### Windows
-- ✅ **NO** uses `sudo` (no existe en Windows)
-- ✅ Usa Git Bash o WSL 2 para ejecutar scripts `.sh`
-- ✅ Asegúrate de que Docker Desktop esté corriendo
+- **NO** uses `sudo` (no existe en Windows)
+- Usa Git Bash o WSL 2 para ejecutar scripts `.sh`
+- Asegúrate de que Docker Desktop esté corriendo
 
 ---
 
-## 🆘 Soporte
+## Soporte
 
 Si tienes problemas:
 
@@ -389,7 +389,7 @@ Si tienes problemas:
 
 ---
 
-## 📚 Recursos Adicionales
+## Recursos Adicionales
 
 - [Docker Desktop para Mac](https://docs.docker.com/desktop/install/mac-install/)
 - [Docker Desktop para Windows](https://docs.docker.com/desktop/install/windows-install/)

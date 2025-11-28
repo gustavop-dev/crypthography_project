@@ -1,24 +1,24 @@
 # Resultados y Análisis
 
-## 📊 Resumen Ejecutivo
+## Resumen Ejecutivo
 
 Este documento presenta los resultados obtenidos de la demostración controlada de ataque Man-in-the-Middle (MitM) sobre tráfico HTTP y la comparación con HTTPS.
 
 ---
 
-## 🎯 Objetivos Cumplidos
+## Objetivos Cumplidos
 
 | Objetivo | Estado | Evidencia |
 |----------|--------|-----------|
-| Demostrar vulnerabilidad HTTP | ✅ Completado | Credenciales capturadas en texto plano |
-| Implementar ataque MitM | ✅ Completado | ARP spoofing + captura de tráfico |
-| Mostrar protección HTTPS | ✅ Completado | Tráfico cifrado no legible |
-| Entorno reproducible | ✅ Completado | Docker Compose funcional |
-| Documentación completa | ✅ Completado | Guías y arquitectura |
+| Demostrar vulnerabilidad HTTP | Completado | Credenciales capturadas en texto plano |
+| Implementar ataque MitM | Completado | ARP spoofing + captura de tráfico |
+| Mostrar protección HTTPS | Completado | Tráfico cifrado no legible |
+| Entorno reproducible | Completado | Docker Compose funcional |
+| Documentación completa | Completado | Guías y arquitectura |
 
 ---
 
-## 🔬 Metodología de Prueba
+## Metodología de Prueba
 
 ### Escenario 1: Tráfico HTTP (Vulnerable)
 
@@ -36,7 +36,7 @@ Este documento presenta los resultados obtenidos de la demostración controlada 
 
 **Resultado:**
 ```
-✅ ATAQUE EXITOSO
+ ATAQUE EXITOSO
 - Credenciales capturadas en texto plano
 - Tiempo de captura: < 1 segundo
 - Información expuesta: username, password, cookies, headers
@@ -58,7 +58,7 @@ Este documento presenta los resultados obtenidos de la demostración controlada 
 
 **Resultado:**
 ```
-❌ ATAQUE FALLIDO
+ ATAQUE FALLIDO
 - Tráfico capturado pero completamente cifrado
 - Credenciales NO legibles
 - Solo metadata visible (IPs, puertos, timestamps)
@@ -66,19 +66,19 @@ Este documento presenta los resultados obtenidos de la demostración controlada 
 
 ---
 
-## 📈 Comparativa HTTP vs HTTPS
+## Comparativa HTTP vs HTTPS
 
 ### Tabla Comparativa
 
 | Aspecto | HTTP | HTTPS |
 |---------|------|-------|
-| **Cifrado** | ❌ Ninguno | ✅ TLS 1.3 |
-| **Credenciales** | ❌ Texto plano | ✅ Cifradas |
-| **Cookies** | ❌ Visibles | ✅ Cifradas |
-| **Headers** | ❌ Visibles | ✅ Cifrados |
-| **Integridad** | ❌ Sin verificación | ✅ HMAC |
-| **Autenticación servidor** | ❌ No | ✅ Certificado |
-| **Vulnerabilidad MitM** | ❌ Alta | ✅ Baja* |
+| **Cifrado** | Ninguno | TLS 1.3 |
+| **Credenciales** | Texto plano | Cifradas |
+| **Cookies** | Visibles | Cifradas |
+| **Headers** | Visibles | Cifrados |
+| **Integridad** | Sin verificación | HMAC |
+| **Autenticación servidor** | No | Certificado |
+| **Vulnerabilidad MitM** | Alta | Baja* |
 
 *Con certificado válido y pinning
 
@@ -95,11 +95,11 @@ username=admin&password=password123
 ```
 
 **Análisis:**
-- ✅ Username visible: `admin`
-- ✅ Password visible: `password123`
-- ✅ Cookie CSRF visible
-- ✅ Headers completos
-- ✅ IP origen visible
+- Username visible: `admin`
+- Password visible: `password123`
+- Cookie CSRF visible
+- Headers completos
+- IP origen visible
 
 ### Datos Capturados - HTTPS
 
@@ -111,15 +111,15 @@ username=admin&password=password123
 ```
 
 **Análisis:**
-- ❌ Username NO visible
-- ❌ Password NO visible
-- ❌ Cookies NO legibles
-- ❌ Headers cifrados
-- ✅ Solo metadata de red visible
+- Username NO visible
+- Password NO visible
+- Cookies NO legibles
+- Headers cifrados
+- Solo metadata de red visible
 
 ---
 
-## 🕵️ Técnicas de Ataque Implementadas
+## Técnicas de Ataque Implementadas
 
 ### 1. ARP Spoofing
 
@@ -140,9 +140,9 @@ Victim → Attacker (cree que es Gateway) → Webserver
 ```
 
 **Efectividad:**
-- ✅ 100% en red local sin protección
-- ✅ Transparente para la víctima
-- ✅ Permite captura bidireccional
+- 100% en red local sin protección
+- Transparente para la víctima
+- Permite captura bidireccional
 
 ### 2. Packet Sniffing
 
@@ -167,13 +167,13 @@ tcpdump -i eth0 -s 65535 -w capture.pcap port 80 or port 443
 ```python
 # Detectar POST request
 if 'POST /login/' in payload:
-    # Extraer body
-    body = payload.split('\r\n\r\n')[1]
-    
-    # Parsear form data
-    params = parse_qs(body)
-    username = params.get('username', [''])[0]
-    password = params.get('password', [''])[0]
+ # Extraer body
+ body = payload.split('\r\n\r\n')[1]
+
+ # Parsear form data
+ params = parse_qs(body)
+ username = params.get('username', [''])[0]
+ password = params.get('password', [''])[0]
 ```
 
 **Tasa de éxito:**
@@ -182,7 +182,7 @@ if 'POST /login/' in payload:
 
 ---
 
-## 📊 Métricas de Rendimiento
+## Métricas de Rendimiento
 
 ### Tiempo de Captura
 
@@ -204,62 +204,62 @@ if 'POST /login/' in payload:
 ### Tamaño de Capturas
 
 ```
-http_capture.pcap:     45 KB (credenciales visibles)
-https_capture.pcap:    78 KB (todo cifrado)
-arp_spoof.pcap:        12 KB (paquetes ARP)
+http_capture.pcap: 45 KB (credenciales visibles)
+https_capture.pcap: 78 KB (todo cifrado)
+arp_spoof.pcap: 12 KB (paquetes ARP)
 ```
 
 ---
 
-## 🔐 Análisis de Seguridad
+## Análisis de Seguridad
 
 ### Vulnerabilidades Encontradas (HTTP)
 
 1. **Credenciales en texto plano**
-   - Severidad: CRÍTICA
-   - CVSS: 9.8
-   - Impacto: Compromiso total de cuenta
+ - Severidad: CRÍTICA
+ - CVSS: 9.8
+ - Impacto: Compromiso total de cuenta
 
 2. **Sin autenticación de servidor**
-   - Severidad: ALTA
-   - CVSS: 7.5
-   - Impacto: Posible phishing
+ - Severidad: ALTA
+ - CVSS: 7.5
+ - Impacto: Posible phishing
 
 3. **Cookies sin flag Secure**
-   - Severidad: ALTA
-   - CVSS: 7.2
-   - Impacto: Session hijacking
+ - Severidad: ALTA
+ - CVSS: 7.2
+ - Impacto: Session hijacking
 
 4. **Sin integridad de datos**
-   - Severidad: MEDIA
-   - CVSS: 6.5
-   - Impacto: Modificación de contenido
+ - Severidad: MEDIA
+ - CVSS: 6.5
+ - Impacto: Modificación de contenido
 
 ### Protecciones Implementadas (HTTPS)
 
 1. **Cifrado TLS 1.3**
-   - ✅ Credenciales cifradas
-   - ✅ Perfect Forward Secrecy
-   - ✅ Algoritmos modernos
+ - Credenciales cifradas
+ - Perfect Forward Secrecy
+ - Algoritmos modernos
 
 2. **Certificado SSL**
-   - ✅ Autenticación de servidor
-   - ✅ RSA 2048 bits
-   - ⚠️ Autofirmado (solo para demo)
+ - Autenticación de servidor
+ - RSA 2048 bits
+ - Autofirmado (solo para demo)
 
 3. **Cookies Secure**
-   - ✅ Flag Secure activado
-   - ✅ Flag HttpOnly activado
-   - ✅ SameSite=Strict
+ - Flag Secure activado
+ - Flag HttpOnly activado
+ - SameSite=Strict
 
 4. **Headers de seguridad**
-   - ✅ Strict-Transport-Security
-   - ✅ X-Content-Type-Options
-   - ✅ X-Frame-Options
+ - Strict-Transport-Security
+ - X-Content-Type-Options
+ - X-Frame-Options
 
 ---
 
-## 📸 Evidencias Visuales
+## Evidencias Visuales
 
 ### Captura HTTP - Wireshark
 
@@ -269,14 +269,14 @@ Ethernet II, Src: 02:42:ac:14:00:14, Dst: 02:42:ac:14:00:1e
 Internet Protocol Version 4, Src: 172.20.0.1, Dst: 172.20.0.30
 Transmission Control Protocol, Src Port: 54321, Dst Port: 80
 Hypertext Transfer Protocol
-    POST /login/ HTTP/1.1\r\n
-    Host: localhost:8080\r\n
-    Content-Type: application/x-www-form-urlencoded\r\n
-    \r\n
-    username=admin&password=password123
-    
-    [Full request URI: http://localhost:8080/login/]
-    [Credentials: admin:password123] ⚠️ VISIBLE
+ POST /login/ HTTP/1.1\r\n
+ Host: localhost:8080\r\n
+ Content-Type: application/x-www-form-urlencoded\r\n
+ \r\n
+ username=admin&password=password123
+
+ [Full request URI: http://localhost:8080/login/]
+ [Credentials: admin:password123] VISIBLE
 ```
 
 ### Captura HTTPS - Wireshark
@@ -287,140 +287,140 @@ Ethernet II, Src: 02:42:ac:14:00:14, Dst: 02:42:ac:14:00:1e
 Internet Protocol Version 4, Src: 172.20.0.1, Dst: 172.20.0.30
 Transmission Control Protocol, Src Port: 54322, Dst Port: 443
 Transport Layer Security
-    TLSv1.3 Record Layer: Application Data Protocol: http-over-tls
-    Encrypted Application Data: 16030300a5010000a103035f8e7d3c2a...
-    
-    [Decrypted data: NOT AVAILABLE] ✅ CIFRADO
+ TLSv1.3 Record Layer: Application Data Protocol: http-over-tls
+ Encrypted Application Data: 16030300a5010000a103035f8e7d3c2a...
+
+ [Decrypted data: NOT AVAILABLE] CIFRADO
 ```
 
 ---
 
-## 🎓 Conclusiones
+## Conclusiones
 
 ### Hallazgos Principales
 
 1. **HTTP es completamente vulnerable a MitM**
-   - Cualquier atacante en la red local puede capturar credenciales
-   - No requiere herramientas sofisticadas
-   - Ataque silencioso e indetectable para el usuario
+ - Cualquier atacante en la red local puede capturar credenciales
+ - No requiere herramientas sofisticadas
+ - Ataque silencioso e indetectable para el usuario
 
 2. **HTTPS protege efectivamente contra MitM**
-   - Cifrado hace imposible leer credenciales
-   - Certificados autentican el servidor
-   - Incluso con captura completa, datos son ilegibles
+ - Cifrado hace imposible leer credenciales
+ - Certificados autentican el servidor
+ - Incluso con captura completa, datos son ilegibles
 
 3. **La implementación es crítica**
-   - HTTPS mal configurado puede ser vulnerable
-   - Certificados autofirmados permiten MitM activo
-   - HSTS previene downgrade attacks
+ - HTTPS mal configurado puede ser vulnerable
+ - Certificados autofirmados permiten MitM activo
+ - HSTS previene downgrade attacks
 
 ### Recomendaciones
 
 #### Para Desarrolladores
 
-✅ **SIEMPRE usar HTTPS en producción**
-✅ **Implementar HSTS** con `max-age` largo
-✅ **Usar certificados válidos** (Let's Encrypt)
-✅ **Configurar cookies** con Secure y HttpOnly
-✅ **Implementar Certificate Pinning** en apps móviles
+ **SIEMPRE usar HTTPS en producción**
+ **Implementar HSTS** con `max-age` largo
+ **Usar certificados válidos** (Let's Encrypt)
+ **Configurar cookies** con Secure y HttpOnly
+ **Implementar Certificate Pinning** en apps móviles
 
 #### Para Usuarios
 
-✅ **Verificar HTTPS** antes de ingresar credenciales
-✅ **No aceptar certificados inválidos** en producción
-✅ **Usar VPN** en redes públicas
-✅ **Activar HTTPS-Only mode** en navegador
-✅ **Verificar URL** antes de hacer login
+ **Verificar HTTPS** antes de ingresar credenciales
+ **No aceptar certificados inválidos** en producción
+ **Usar VPN** en redes públicas
+ **Activar HTTPS-Only mode** en navegador
+ **Verificar URL** antes de hacer login
 
 #### Para Administradores de Red
 
-✅ **Implementar 802.1X** para autenticación de red
-✅ **Usar ARP inspection** en switches
-✅ **Monitorear tráfico** anómalo
-✅ **Segmentar redes** por nivel de confianza
-✅ **Educar usuarios** sobre riesgos
+ **Implementar 802.1X** para autenticación de red
+ **Usar ARP inspection** en switches
+ **Monitorear tráfico** anómalo
+ **Segmentar redes** por nivel de confianza
+ **Educar usuarios** sobre riesgos
 
 ---
 
-## 📚 Lecciones Aprendidas
+## Lecciones Aprendidas
 
 ### Técnicas
 
 1. **Docker es ideal para laboratorios de seguridad**
-   - Aislamiento completo
-   - Reproducible
-   - Fácil de limpiar
+ - Aislamiento completo
+ - Reproducible
+ - Fácil de limpiar
 
 2. **Python + Scapy es poderoso para análisis de red**
-   - Flexible y programable
-   - Integración con otras herramientas
-   - Análisis en tiempo real
+ - Flexible y programable
+ - Integración con otras herramientas
+ - Análisis en tiempo real
 
 3. **La visualización es clave para educación**
-   - Mostrar datos reales es más impactante
-   - Comparación lado a lado es efectiva
-   - Interfaz limpia mejora comprensión
+ - Mostrar datos reales es más impactante
+ - Comparación lado a lado es efectiva
+ - Interfaz limpia mejora comprensión
 
 ### Seguridad
 
 1. **El cifrado es fundamental**
-   - No es opcional en 2025
-   - Protege contra múltiples ataques
-   - Relativamente fácil de implementar
+ - No es opcional en 2025
+ - Protege contra múltiples ataques
+ - Relativamente fácil de implementar
 
 2. **La configuración importa tanto como la tecnología**
-   - HTTPS mal configurado no protege
-   - Defaults inseguros son peligrosos
-   - Auditorías regulares son necesarias
+ - HTTPS mal configurado no protege
+ - Defaults inseguros son peligrosos
+ - Auditorías regulares son necesarias
 
 3. **La educación es la mejor defensa**
-   - Usuarios informados toman mejores decisiones
-   - Desarrolladores conscientes escriben código seguro
-   - Administradores capacitados configuran mejor
+ - Usuarios informados toman mejores decisiones
+ - Desarrolladores conscientes escriben código seguro
+ - Administradores capacitados configuran mejor
 
 ---
 
-## 🔄 Trabajo Futuro
+## Trabajo Futuro
 
 ### Mejoras Propuestas
 
 1. **Implementar SSL Stripping**
-   - Demostrar downgrade attack
-   - Mostrar importancia de HSTS
+ - Demostrar downgrade attack
+ - Mostrar importancia de HSTS
 
 2. **Agregar DNS Spoofing**
-   - Redirigir a sitio falso
-   - Phishing avanzado
+ - Redirigir a sitio falso
+ - Phishing avanzado
 
 3. **Certificate Pinning**
-   - Implementar en cliente
-   - Prevenir MitM activo
+ - Implementar en cliente
+ - Prevenir MitM activo
 
 4. **Análisis de tráfico cifrado**
-   - Traffic analysis
-   - Timing attacks
-   - Metadata leakage
+ - Traffic analysis
+ - Timing attacks
+ - Metadata leakage
 
 ### Extensiones Educativas
 
 1. **Dashboard web interactivo**
-   - Visualización en tiempo real
-   - Gráficas de tráfico
-   - Comparativas automáticas
+ - Visualización en tiempo real
+ - Gráficas de tráfico
+ - Comparativas automáticas
 
 2. **Más escenarios**
-   - FTP vs SFTP
-   - Telnet vs SSH
-   - SMTP vs SMTPS
+ - FTP vs SFTP
+ - Telnet vs SSH
+ - SMTP vs SMTPS
 
 3. **Integración con Kali Linux**
-   - Usar herramientas profesionales
-   - Ettercap, Bettercap
-   - Burp Suite
+ - Usar herramientas profesionales
+ - Ettercap, Bettercap
+ - Burp Suite
 
 ---
 
-## 📖 Referencias
+## Referencias
 
 ### Estándares y RFCs
 
@@ -444,6 +444,6 @@ Transport Layer Security
 
 ---
 
-**Fecha del análisis:** Noviembre 2025  
-**Versión del documento:** 1.0  
+**Fecha del análisis:** Noviembre 2025 
+**Versión del documento:** 1.0 
 **Autores:** Grupo 6 - Criptografía y Seguridad UNAL

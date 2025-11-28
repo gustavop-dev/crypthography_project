@@ -7,7 +7,7 @@
 
 set -e  # Salir si hay algún error
 
-echo "🐳 Instalando Docker y Docker Compose..."
+echo " Instalando Docker y Docker Compose..."
 echo ""
 
 # Detectar distribución de Linux
@@ -16,16 +16,16 @@ if [ -f /etc/os-release ]; then
     OS=$ID
     VERSION=$VERSION_ID
 else
-    echo "❌ No se pudo detectar la distribución de Linux"
+    echo " No se pudo detectar la distribución de Linux"
     exit 1
 fi
 
-echo "📋 Sistema detectado: $OS $VERSION"
+echo " Sistema detectado: $OS $VERSION"
 echo ""
 
 # Función para Ubuntu/Debian
 install_docker_ubuntu() {
-    echo "📦 Instalando Docker en Ubuntu/Debian..."
+    echo " Instalando Docker en Ubuntu/Debian..."
     
     # Actualizar repositorios
     sudo apt-get update
@@ -50,17 +50,17 @@ install_docker_ubuntu() {
     sudo apt-get update
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     
-    echo "✅ Docker instalado correctamente"
+    echo " Docker instalado correctamente"
 }
 
 # Función para Arch Linux
 install_docker_arch() {
-    echo "📦 Instalando Docker en Arch Linux..."
+    echo " Instalando Docker en Arch Linux..."
     
     sudo pacman -Syu --noconfirm
     sudo pacman -S --noconfirm docker docker-compose
     
-    echo "✅ Docker instalado correctamente"
+    echo " Docker instalado correctamente"
 }
 
 # Instalar según la distribución
@@ -72,7 +72,7 @@ case $OS in
         install_docker_arch
         ;;
     *)
-        echo "❌ Distribución no soportada: $OS"
+        echo " Distribución no soportada: $OS"
         echo "Por favor, instala Docker manualmente desde: https://docs.docker.com/engine/install/"
         exit 1
         ;;
@@ -80,25 +80,25 @@ esac
 
 # Iniciar y habilitar Docker
 echo ""
-echo "🚀 Iniciando servicio Docker..."
+echo " Iniciando servicio Docker..."
 sudo systemctl start docker
 sudo systemctl enable docker
 
 # Añadir usuario actual al grupo docker
 echo ""
-echo "👤 Añadiendo usuario al grupo docker..."
+echo " Añadiendo usuario al grupo docker..."
 sudo usermod -aG docker $USER
 
 # Verificar instalación
 echo ""
-echo "🔍 Verificando instalación..."
+echo " Verificando instalación..."
 docker --version
 docker compose version
 
 echo ""
-echo "✅ ¡Docker instalado correctamente!"
+echo " ¡Docker instalado correctamente!"
 echo ""
-echo "⚠️  IMPORTANTE: Debes cerrar sesión y volver a entrar para que los cambios surtan efecto."
+echo "  IMPORTANTE: Debes cerrar sesión y volver a entrar para que los cambios surtan efecto."
 echo "    O ejecuta: newgrp docker"
 echo ""
 echo "Para verificar que funciona, ejecuta:"

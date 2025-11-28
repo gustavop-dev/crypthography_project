@@ -26,7 +26,7 @@ setup_docker_command() {
             DOCKER_CMD="docker"
             DOCKER_COMPOSE_CMD="docker compose"
         else
-            echo "⚠️  En Linux necesitas sudo o estar en el grupo docker"
+            echo "  En Linux necesitas sudo o estar en el grupo docker"
             DOCKER_CMD="sudo docker"
             DOCKER_COMPOSE_CMD="sudo docker compose"
         fi
@@ -40,7 +40,7 @@ setup_docker_command() {
 # Verificar que Docker está instalado
 check_docker() {
     if ! command -v docker &> /dev/null; then
-        echo "❌ Docker no está instalado"
+        echo " Docker no está instalado"
         echo ""
         case "$OS" in
             Linux)
@@ -58,7 +58,7 @@ check_docker() {
     
     # Verificar que Docker está corriendo
     if ! $DOCKER_CMD ps &> /dev/null; then
-        echo "❌ Docker no está corriendo"
+        echo " Docker no está corriendo"
         echo ""
         case "$OS" in
             Linux)
@@ -89,13 +89,13 @@ clear
 
 echo -e "${CYAN}"
 cat << "EOF"
-╔════════════════════════════════════════════════════════════╗
-║           DEMOSTRACIÓN COMPARATIVA                         ║
-║           HTTP vs HTTPS - Ataque MitM                      ║
-║                                                            ║
-║     Universidad Nacional de Colombia - Sede Medellín      ║
-║           Criptografía y Seguridad - Grupo 6              ║
-╚════════════════════════════════════════════════════════════╝
+
+           DEMOSTRACIÓN COMPARATIVA                         
+           HTTP vs HTTPS - Ataque MitM                      
+                                                            
+     Universidad Nacional de Colombia - Sede Medellín      
+           Criptografía y Seguridad - Grupo 6              
+
 EOF
 echo -e "${NC}"
 
@@ -103,32 +103,32 @@ echo -e "${CYAN}Sistema detectado: ${GREEN}$OS${NC}"
 echo -e "${CYAN}Comando Docker: ${GREEN}$DOCKER_CMD${NC}"
 echo ""
 
-echo -e "${RED}⚠️  ADVERTENCIA: USO EDUCATIVO ÚNICAMENTE${NC}"
+echo -e "${RED}  ADVERTENCIA: USO EDUCATIVO ÚNICAMENTE${NC}"
 echo -e "${YELLOW}Esta demostración muestra vulnerabilidades en un entorno controlado${NC}"
 echo ""
 
 # Verificar que estamos en el directorio correcto
 if [ ! -f "mitm-demo/docker-compose.yml" ]; then
-    echo -e "${RED}❌ Error: Ejecuta desde el directorio raíz del proyecto${NC}"
+    echo -e "${RED} Error: Ejecuta desde el directorio raíz del proyecto${NC}"
     exit 1
 fi
 
 cd mitm-demo
 
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}${NC}"
 echo -e "${GREEN}PARTE 1: DEMOSTRACIÓN CON HTTP (VULNERABLE)${NC}"
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}${NC}"
 echo ""
 
 echo -e "${YELLOW}Presiona ENTER para continuar...${NC}"
 read
 
 # Limpiar entorno previo
-echo -e "${YELLOW}🧹 Limpiando entorno previo...${NC}"
+echo -e "${YELLOW} Limpiando entorno previo...${NC}"
 $DOCKER_COMPOSE_CMD down -v 2>/dev/null
 
 # Levantar contenedores
-echo -e "${YELLOW}🚀 Levantando contenedores...${NC}"
+echo -e "${YELLOW} Levantando contenedores...${NC}"
 $DOCKER_COMPOSE_CMD up -d
 
 # Esperar a que el webserver esté listo
@@ -137,33 +137,33 @@ sleep 5
 
 # Verificar que el contenedor está corriendo
 if ! $DOCKER_CMD ps | grep -q mitm-webserver; then
-    echo -e "${RED}❌ Error: El contenedor webserver no está corriendo${NC}"
+    echo -e "${RED} Error: El contenedor webserver no está corriendo${NC}"
     echo -e "${YELLOW}Logs del error:${NC}"
     $DOCKER_COMPOSE_CMD logs webserver
     exit 1
 fi
 
 echo ""
-echo -e "${GREEN}✅ Servidor HTTP listo${NC}"
+echo -e "${GREEN} Servidor HTTP listo${NC}"
 echo ""
 
 cat << "EOF"
 
-╔════════════════════════════════════════════════════════════╗
-║           PARTE 1: DEMOSTRACIÓN CON HTTP                   ║
-║                    (VULNERABLE)                            ║
-╚════════════════════════════════════════════════════════════╝
+
+           PARTE 1: DEMOSTRACIÓN CON HTTP                   
+                    (VULNERABLE)                            
+
 EOF
 
 echo ""
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}${NC}"
 echo -e "${CYAN}PARTE 1: DEMOSTRACIÓN CON HTTP (VULNERABLE)${NC}"
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}${NC}"
 echo ""
 
-echo -e "${GREEN}🌐 Servidor HTTP corriendo en: ${CYAN}http://localhost:8080${NC}"
+echo -e "${GREEN} Servidor HTTP corriendo en: ${CYAN}http://localhost:8080${NC}"
 echo ""
-echo -e "${YELLOW}📋 INSTRUCCIONES:${NC}"
+echo -e "${YELLOW} INSTRUCCIONES:${NC}"
 echo -e "   1. Abre tu navegador"
 echo -e "   2. Ve a: ${CYAN}http://localhost:8080${NC}"
 echo -e "   3. Haz login con:"
@@ -175,7 +175,7 @@ echo -e "${YELLOW}Presiona ENTER cuando estés listo para ver el tráfico interc
 read
 
 echo ""
-echo -e "${RED}🕵️  INTERCEPTANDO TRÁFICO HTTP...${NC}"
+echo -e "${RED}  INTERCEPTANDO TRÁFICO HTTP...${NC}"
 echo ""
 
 # Iniciar monitor en background
@@ -184,15 +184,15 @@ MONITOR_PID=$!
 
 echo ""
 cat << "EOF"
-════════════════════════════════════════════════════════════
-🎯 AHORA HAZ LOGIN EN TU NAVEGADOR
-════════════════════════════════════════════════════════════
+
+ AHORA HAZ LOGIN EN TU NAVEGADOR
+
 
    URL: http://localhost:8080
    Usuario: admin
    Contraseña: password123
 
-⚠️  Presiona Ctrl+C después de hacer login
+  Presiona Ctrl+C después de hacer login
 
 EOF
 
@@ -202,9 +202,9 @@ wait $MONITOR_PID 2>/dev/null
 trap - INT
 
 echo ""
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
-echo -e "${RED}✅ RESULTADO: CREDENCIALES INTERCEPTADAS${NC}"
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}${NC}"
+echo -e "${RED} RESULTADO: CREDENCIALES INTERCEPTADAS${NC}"
+echo -e "${BLUE}${NC}"
 echo ""
 
 echo -e "${YELLOW}Presiona ENTER para continuar con HTTPS...${NC}"
@@ -218,32 +218,32 @@ clear
 
 cat << "EOF"
 
-╔════════════════════════════════════════════════════════════╗
-║           PARTE 2: DEMOSTRACIÓN CON HTTPS                  ║
-║                    (SEGURO)                                ║
-╚════════════════════════════════════════════════════════════╝
+
+           PARTE 2: DEMOSTRACIÓN CON HTTPS                  
+                    (SEGURO)                                
+
 EOF
 
 echo ""
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}${NC}"
 echo -e "${CYAN}PARTE 2: DEMOSTRACIÓN CON HTTPS (SEGURO)${NC}"
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}${NC}"
 echo ""
 
-echo -e "${YELLOW}🔐 Generando certificado SSL...${NC}"
+echo -e "${YELLOW} Generando certificado SSL...${NC}"
 $DOCKER_COMPOSE_CMD exec -T webserver bash /app/generate_cert.sh
 
 echo ""
-echo -e "${YELLOW}🔒 Deteniendo servidor HTTP y iniciando HTTPS...${NC}"
+echo -e "${YELLOW} Deteniendo servidor HTTP y iniciando HTTPS...${NC}"
 $DOCKER_COMPOSE_CMD exec -T webserver pkill -f "python.*manage.py" 2>/dev/null || true
 sleep 2
 $DOCKER_COMPOSE_CMD exec -d webserver bash /app/start_https.sh
 sleep 3
 
-echo -e "${GREEN}✅ Servidor HTTPS listo${NC}"
+echo -e "${GREEN} Servidor HTTPS listo${NC}"
 echo ""
-echo -e "${GREEN}🌐 Servidor HTTPS corriendo en: ${CYAN}https://localhost:8443${NC}"
-echo -e "${RED}⚠️  Tu navegador mostrará advertencia de certificado (es normal)${NC}"
+echo -e "${GREEN} Servidor HTTPS corriendo en: ${CYAN}https://localhost:8443${NC}"
+echo -e "${RED}  Tu navegador mostrará advertencia de certificado (es normal)${NC}"
 echo -e "   Haz clic en 'Avanzado' → 'Continuar de todos modos'"
 echo ""
 
@@ -251,7 +251,7 @@ echo -e "${YELLOW}Presiona ENTER cuando estés listo para hacer login por HTTPS.
 read
 
 echo ""
-echo -e "${CYAN}🕵️  INTENTANDO INTERCEPTAR TRÁFICO HTTPS...${NC}"
+echo -e "${CYAN}  INTENTANDO INTERCEPTAR TRÁFICO HTTPS...${NC}"
 echo ""
 
 # Iniciar monitor en background
@@ -259,17 +259,17 @@ $DOCKER_COMPOSE_CMD exec -T webserver python /app/monitor_traffic.py &
 MONITOR_PID=$!
 
 cat << "EOF"
-════════════════════════════════════════════════════════════
-🎯 AHORA HAZ LOGIN POR HTTPS EN TU NAVEGADOR
-════════════════════════════════════════════════════════════
+
+ AHORA HAZ LOGIN POR HTTPS EN TU NAVEGADOR
+
 
    URL: https://localhost:8443
    Usuario: admin
    Contraseña: password123
 
-🔒 El atacante NO podrá ver las credenciales
+ El atacante NO podrá ver las credenciales
 
-⚠️  Presiona Ctrl+C después de hacer login
+  Presiona Ctrl+C después de hacer login
 
 EOF
 
@@ -279,35 +279,35 @@ wait $MONITOR_PID 2>/dev/null
 trap - INT
 
 echo ""
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
-echo -e "${GREEN}✅ RESULTADO: CREDENCIALES CIFRADAS - NO INTERCEPTADAS${NC}"
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}${NC}"
+echo -e "${GREEN} RESULTADO: CREDENCIALES CIFRADAS - NO INTERCEPTADAS${NC}"
+echo -e "${BLUE}${NC}"
 
 # ============================================
 # COMPARACIÓN FINAL
 # ============================================
 
 echo ""
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
-echo -e "${MAGENTA}📊 COMPARACIÓN FINAL${NC}"
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}${NC}"
+echo -e "${MAGENTA} COMPARACIÓN FINAL${NC}"
+echo -e "${BLUE}${NC}"
 echo ""
 
-echo -e "${RED}❌ HTTP (Puerto 8080):${NC}"
+echo -e "${RED} HTTP (Puerto 8080):${NC}"
 echo -e "   • Credenciales en texto plano"
 echo -e "   • Fácilmente interceptables"
 echo -e "   • Vulnerable a MitM"
 echo ""
 
-echo -e "${GREEN}✅ HTTPS (Puerto 8443):${NC}"
+echo -e "${GREEN} HTTPS (Puerto 8443):${NC}"
 echo -e "   • Credenciales cifradas"
 echo -e "   • Imposible de interceptar sin certificado"
 echo -e "   • Protegido contra MitM"
 echo ""
 
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
-echo -e "${CYAN}🎓 CONCLUSIÓN${NC}"
-echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
+echo -e "${BLUE}${NC}"
+echo -e "${CYAN} CONCLUSIÓN${NC}"
+echo -e "${BLUE}${NC}"
 echo ""
 echo -e "${GREEN}SIEMPRE usa HTTPS para proteger información sensible${NC}"
 echo ""
@@ -317,12 +317,12 @@ read
 
 # Limpieza
 echo ""
-echo -e "${YELLOW}🧹 Limpiando entorno...${NC}"
+echo -e "${YELLOW} Limpiando entorno...${NC}"
 $DOCKER_COMPOSE_CMD down
 
 echo ""
-echo -e "${GREEN}✅ Demo completada y entorno limpio${NC}"
+echo -e "${GREEN} Demo completada y entorno limpio${NC}"
 echo -e "${CYAN}Gracias por usar la demostración${NC}"
 echo ""
-echo -e "${BLUE}💡 Para volver a ejecutar: bash scripts/demo_completa_cross_platform.sh${NC}"
+echo -e "${BLUE} Para volver a ejecutar: bash scripts/demo_completa_cross_platform.sh${NC}"
 echo ""
