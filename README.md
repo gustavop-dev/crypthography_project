@@ -66,13 +66,18 @@ Todos los participantes han dado su consentimiento para las pruebas.
 
 ## 🛠️ Requisitos del Sistema
 
+### Sistemas Operativos Soportados
+
+✅ **Linux** (Ubuntu 20.04+, Debian, Fedora, Arch, etc.)  
+✅ **macOS** (10.15 Catalina o superior, Intel y Apple Silicon)  
+✅ **Windows** (10/11 con WSL 2 y Docker Desktop)
+
 ### Software Necesario
 
-- **Sistema Operativo:** Linux (Ubuntu 20.04+, Debian, Arch, etc.)
-- **Docker:** 20.10+
-- **Docker Compose:** 2.0+
-- **Python:** 3.10 o superior
+- **Docker:** 20.10+ ([Guía de instalación multiplataforma](docs/INSTALACION_MULTIPLATAFORMA.md))
+- **Docker Compose:** 2.0+ (incluido en Docker Desktop)
 - **Git:** Para clonar el repositorio
+- **Python:** 3.10+ (opcional, solo para desarrollo)
 - **Wireshark:** (Opcional) Para análisis manual de capturas
 
 ### Verificar Requisitos
@@ -93,33 +98,44 @@ docker ps
 
 ## 🚀 Instalación Rápida
 
-### 1. Clonar el Repositorio
+### 1. Instalar Docker
+
+**Elige tu sistema operativo:**
+
+- 🐧 **Linux:** [Guía de instalación](docs/INSTALACION_MULTIPLATAFORMA.md#-linux-ubuntu-debian-fedora-arch-etc)
+- 🍎 **macOS:** [Descargar Docker Desktop](https://docs.docker.com/desktop/install/mac-install/)
+- 🪟 **Windows:** [Descargar Docker Desktop](https://docs.docker.com/desktop/install/windows-install/) + WSL 2
+
+📖 **[Guía completa de instalación multiplataforma](docs/INSTALACION_MULTIPLATAFORMA.md)**
+
+### 2. Clonar el Repositorio
 
 ```bash
 git clone https://github.com/gustavop-dev/crypthography_project.git
 cd cryptography_project
 ```
 
-### 2. Verificar Requisitos
+### 3. Verificar Docker
 
 ```bash
-# Verificar Docker
+# Verificar que Docker está instalado y corriendo
 docker --version
 docker compose version
-
-# Verificar permisos (Linux)
-sudo usermod -aG docker $USER
-newgrp docker  # O cerrar sesión y volver a entrar
+docker ps
 ```
 
-### 3. ¡Listo! Ejecutar Demo
+### 4. ¡Ejecutar Demo!
 
 ```bash
-# Demo completa automatizada
-bash scripts/demo_completa.sh
+# Demo completa automatizada (funciona en Linux, macOS y Windows)
+bash scripts/demo_completa_cross_platform.sh
 ```
 
-**Nota:** No necesitas instalar Python ni dependencias. Todo corre dentro de Docker.
+**Notas importantes:**
+- ✅ **Linux:** Puede requerir `sudo` (el script lo detecta automáticamente)
+- ✅ **macOS:** NO uses `sudo`, Docker Desktop ya tiene permisos
+- ✅ **Windows:** Usa Git Bash o WSL 2, NO uses `sudo`
+- ✅ No necesitas instalar Python, todo corre en Docker
 
 ---
 
@@ -269,6 +285,7 @@ bash scripts/setup_ssh_keys.sh
 
 ## 📖 Documentación Detallada
 
+- **[Instalación Multiplataforma](docs/INSTALACION_MULTIPLATAFORMA.md)**: Linux, macOS y Windows
 - **[Arquitectura del Sistema](docs/ARQUITECTURA.md)**: Topología de red y componentes
 - **[Guía de Uso Completa](docs/GUIA_USO.md)**: Paso a paso para ejecutar la demo
 - **[Resultados y Análisis](docs/RESULTADOS.md)**: Evidencias y comparativas HTTP vs HTTPS
